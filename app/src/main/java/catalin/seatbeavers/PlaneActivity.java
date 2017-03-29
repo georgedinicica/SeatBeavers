@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class PlaneActivity extends AppCompatActivity {
-
+/*catalin*/
     int[] linearLayoutRedIDs = new int[]{R.id.linearred1, R.id.linearred2, R.id.linearred3, R.id.linearred4, R.id.linearred5, R.id.linearred6,
             R.id.linearred7, R.id.linearred8, R.id.linearred9, R.id.linearred10, R.id.linearred11, R.id.linearred12,
             R.id.linearred13, R.id.linearred14, R.id.linearred15, R.id.linearred16, R.id.linearred17, R.id.linearred18};
