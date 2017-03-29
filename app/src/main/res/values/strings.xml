@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Beavers</string>
+    <string name="startButtonString">Launch Plane</string>
+    <string name="restartButtonString">Restart</string>
+    <string name="test">Test Answer</string>
+    <string name="textView1">This should be green:</string>
+
+</resources>
