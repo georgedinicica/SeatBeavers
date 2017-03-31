@@ -192,89 +192,89 @@ public class PlaneActivity extends AppCompatActivity {
             public boolean onDrag(View v, DragEvent event) {
                 View draggedImage = (View) event.getLocalState();
 
-                if(DragEvent.ACTION_DRAG_STARTED==event.getAction()){
-                    v.setBackgroundColor(Color.GREEN);
-                    aTextView.setText("");
-                    checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
-                    draggedImage.setVisibility(View.INVISIBLE);
-                }
-                if(DragEvent.ACTION_DRAG_ENDED==event.getAction()){
-                    v.setBackgroundColor(getResources().getColor(R.color.colorBright));
-                    draggedImage.setVisibility(View.VISIBLE);
+        if(DragEvent.ACTION_DRAG_STARTED==event.getAction()){
+            v.setBackgroundColor(Color.GREEN);
+            aTextView.setText("");
+            checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
+            draggedImage.setVisibility(View.INVISIBLE);
+        }
+        if(DragEvent.ACTION_DRAG_ENDED==event.getAction()){
+            v.setBackgroundColor(getResources().getColor(R.color.colorBright));
+            draggedImage.setVisibility(View.VISIBLE);
 
-                }
-                if(DragEvent.ACTION_DRAG_ENTERED==event.getAction()){
-                    v.setBackgroundColor(Color.BLUE);
-                }
-                if(DragEvent.ACTION_DRAG_EXITED==event.getAction()){
-                    v.setBackgroundColor(Color.GREEN);
+        }
+        if(DragEvent.ACTION_DRAG_ENTERED==event.getAction()){
+            v.setBackgroundColor(Color.BLUE);
+        }
+        if(DragEvent.ACTION_DRAG_EXITED==event.getAction()){
+            v.setBackgroundColor(Color.GREEN);
 //                      checkAnswerLinearLayout.setVisibility(View.VISIBLE);
-                }
-                if (DragEvent.ACTION_DROP == event.getAction()) {
+        }
+        if (DragEvent.ACTION_DROP == event.getAction()) {
 
-                    ViewGroup owner = (ViewGroup) draggedImage.getParent();
-                    ViewGroup container = (ViewGroup) v;
-                    View replacingImage = container.getChildAt(0);
+            ViewGroup owner = (ViewGroup) draggedImage.getParent();
+            ViewGroup container = (ViewGroup) v;
+            View replacingImage = container.getChildAt(0);
 
-                    if(container.getChildCount()==0){ /*add new image in empty place*/
-                        owner.removeView(draggedImage);
-                        draggedImage.setX(0);
-                        draggedImage.setY(0);
-                        container.addView(draggedImage,0);
-                        draggedImage.setVisibility(View.VISIBLE); /***/
-                        return true;
-                    }
-                    else if(container.getChildCount()==1) { /* Swap images  */
-                        if(draggedImage.getParent().toString().contains("activity_plane")) {
-                            for (Seat p : listOfSeats) {
-                                if (p.getMyImageDescription() == container.getChildAt(0).getContentDescription()) {
-                                    x_Coord = p.getX_coord() + 10;
-                                    y_Coord = p.getY_coord();
-                                    break;
-                                }
-                            }
-                            owner.removeView(draggedImage);
-                            replacingImage.setX(x_Coord);
-                            replacingImage.setY(y_Coord);
-                            draggedImage.setX(0);
-                            draggedImage.setY(0);
-                            container.addView(draggedImage);
-                            container.removeView(replacingImage);
-                            owner.addView(replacingImage);
-                            v.setVisibility(View.VISIBLE); /***/
-                            draggedImage.setVisibility(View.VISIBLE); /***/
-                            replacingImage.setVisibility(View.VISIBLE); /***/
-                            return  true;
-                        }
-                        else if(draggedImage.getParent().toString().contains("linear")) {
-/**      this should be modified to satisfy the last requirement( add home)*/
-
-                                container.removeView(replacingImage);  /*SWAP linear*/
-                                owner.addView(replacingImage);
-                                replacingImage.setX(0); /*hard to get*/
-                                replacingImage.setY(0);
-                                owner.removeView(draggedImage);
-                                container.addView(draggedImage);
-                                draggedImage.setX(0);
-                                draggedImage.setY(0);
-                                v.invalidate();
-                                draggedImage.setVisibility(View.VISIBLE); /***/
-                                replacingImage.invalidate();
-                                draggedImage.invalidate();/**/
-                                replacingImage.setVisibility(View.VISIBLE); /***/
-                           return  true;
-
-                        }
-                    }
-                    v.setVisibility(View.VISIBLE);
-                }
-                if(event.getAction()==DragEvent.ACTION_DRAG_ENDED){
-                    v.setVisibility(View.VISIBLE);
-                }
-
+            if(container.getChildCount()==0){ /*add new image in empty place*/
+                owner.removeView(draggedImage);
+                draggedImage.setX(0);
+                draggedImage.setY(0);
+                container.addView(draggedImage,0);
+                draggedImage.setVisibility(View.VISIBLE); /***/
                 return true;
             }
-        });
+            else if(container.getChildCount()==1) { /* Swap images  */
+                if(draggedImage.getParent().toString().contains("activity_plane")) {
+                    for (Seat p : listOfSeats) {
+                        if (p.getMyImageDescription() == container.getChildAt(0).getContentDescription()) {
+                            x_Coord = p.getX_coord() + 10;
+                            y_Coord = p.getY_coord();
+                            break;
+                        }
+                    }
+                    owner.removeView(draggedImage);
+                    replacingImage.setX(x_Coord);
+                    replacingImage.setY(y_Coord);
+                    draggedImage.setX(0);
+                    draggedImage.setY(0);
+                    container.addView(draggedImage);
+                    container.removeView(replacingImage);
+                    owner.addView(replacingImage);
+                    v.setVisibility(View.VISIBLE); /***/
+                    draggedImage.setVisibility(View.VISIBLE); /***/
+                    replacingImage.setVisibility(View.VISIBLE); /***/
+                    return  true;
+                }
+                else if(draggedImage.getParent().toString().contains("linear")) {
+/**      this should be modified to satisfy the last requirement( add home)*/
+
+                    container.removeView(replacingImage);  /*SWAP linear*/
+                    owner.addView(replacingImage);
+                    replacingImage.setX(0); /*hard to get*/
+                    replacingImage.setY(0);
+                    owner.removeView(draggedImage);
+                    container.addView(draggedImage);
+                    draggedImage.setX(0);
+                    draggedImage.setY(0);
+                    v.invalidate();
+                    draggedImage.setVisibility(View.VISIBLE); /***/
+                    replacingImage.invalidate();
+                    draggedImage.invalidate();/**/
+                    replacingImage.setVisibility(View.VISIBLE); /***/
+                    return  true;
+
+                }
+            }
+            v.setVisibility(View.VISIBLE);
+        }
+        if(event.getAction()==DragEvent.ACTION_DRAG_ENDED){
+            v.setVisibility(View.VISIBLE);
+        }
+
+        return true;
+    }
+});
 
         }
     }

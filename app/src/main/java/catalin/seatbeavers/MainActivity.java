@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class SeatBeaversActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     Button startButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,4 +20,9 @@ public class SeatBeaversActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void startNamesApp(View view) {
+        Intent intent=new Intent(this,NamesActivity.class);
+
+        startActivity(intent);
+    }
 }

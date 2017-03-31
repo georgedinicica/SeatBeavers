@@ -4,5 +4,6 @@
     <string name="restartButtonString">Restart</string>
     <string name="test">Test Answer</string>
     <string name="textView1">This should be green:</string>
+    <string name="names_string">Names</string>
 
 </resources>
