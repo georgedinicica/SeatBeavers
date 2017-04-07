@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/restartButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/buttonstyle"
+        android:foreground="@android:drawable/ic_menu_rotate"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:onClick="recreateActivity"
+        android:text="@string/restartButtonString"
+        android:textColor="@color/colorBright"
+
+        />
+
+    <Button
+        android:id="@+id/buttonTest"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/restartButton"
+        android:layout_margin="10dp"
+        android:background="@drawable/buttonstyle"
+        android:onClick="checkSolution"
+        android:text="@string/test"
+        android:textColor="@color/colorBright"
+
+        />
+
+    <LinearLayout
+        android:id="@+id/testAnswerLayout"
+        android:visibility="invisible"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/restartButton"
+        android:layout_margin="10dp"
+        android:layout_toStartOf="@+id/restartButton"
+        android:background="@color/colorRed"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@+id/testAnswerLayout"
+        android:layout_margin="10dp"
+        android:layout_toStartOf="@+id/testAnswerLayout"
+        android:shadowDy="20"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
+
+
+</RelativeLayout>

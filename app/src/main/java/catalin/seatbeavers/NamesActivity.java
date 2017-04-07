@@ -1,14 +1,11 @@
 package catalin.seatbeavers;
 
 import android.content.ClipData;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.DragEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,80 +18,87 @@ import java.util.Collections;
 import java.util.List;
 
 public class NamesActivity extends AppCompatActivity {
-int[] drawableNames=new int[]{R.drawable.alena,R.drawable.bruno,R.drawable.cyril,R.drawable.dana,R.drawable.eva};
-    float x_Coord=0;float y_Coord=200;
-    ViewGroup alayout,bLayout;
+    int[] drawableNames = new int[]{R.drawable.alena, R.drawable.bruno, R.drawable.cyril, R.drawable.dana, R.drawable.eva};
+    float x_Coord = 0;
+    float y_Coord = 300;
+    ViewGroup redLayout, bLayout, yellowLayout, mainLayout;
+    RelativeLayout myLayout;
     List<Integer> drawableList = new ArrayList<>();
-    private List<Seat> listOfNames=new ArrayList<>();
-LinearLayout linearLayout;
-    private static float my_x=0;
+    private List<Seat> listOfNames = new ArrayList<>();
+    LinearLayout linearLayout;
+    private static float my_x = 0;
+    String MAIN_TAG = "main";
+    String TAG_LINEAR_RED = "linear";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        shuffleDrawables(drawableNames,drawableList);
-setAlayout();
-        addAllImages();
-//        LayoutInflater li=getLayoutInflater();
-//        li.inflate(R.layout.activity_names, (ViewGroup) alayout, false);
-//
-////        linearLayout=(LinearLayout) findViewById(R.id.linearName);
-////        linearLayout.setVisibility(View.VISIBLE);
-////        View layout2 = LayoutInflater.from(this).inflate(R.layout.activity_names, linearLayout, false);
-//      ;
-//        //addImage();
 
-//     linearLayout.addView(layout2);
-        //   findViewById(R.id.linearName).setOnDragListener(new MyDragListener());
+        setMainLayout(10, 10);
+
+        shuffleDrawables(drawableNames, drawableList);
+
+        setImagesContainerLayout();
+        addAllImages(drawableNames.length);
+        setContentView(mainLayout);
     }
 
-    private void setAlayout() {
-        ViewGroup v=new LinearLayout(this);
-        v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        v.setBackgroundColor(Color.YELLOW);
-        ViewGroup w=new RelativeLayout(this);
-        w.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,100));
-        w.setBackgroundColor(Color.GREEN);
-        w.setId(5);
-        alayout= new RelativeLayout(this);
-        alayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                350));
-        alayout.setBackgroundColor(Color.RED);
-        alayout.addView(w);
+    private void setMainLayout(int xCoord, int yCoord) {
 
-        v.addView(alayout);
-        //alayout.addView(findViewById(R.id.linearNames));
-        setContentView(v);
-        w.setOnDragListener(new MyDragListener());
-        //
-        //setContentView(R.layout.activity_names);
-//        bLayout=new LinearLayout(this);
-//        bLayout.setBackgroundColor(Color.GREEN);
-//        bLayout.setLayoutParams(new ViewGroup.LayoutParams(400,300));
-//        setContentView(bLayout);
+        mainLayout = new RelativeLayout(this);
+        mainLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mainLayout.setY(yCoord);
+        mainLayout.setX(xCoord);
+        mainLayout.setContentDescription(MAIN_TAG);
+        mainLayout.setBackgroundColor(Color.LTGRAY);
+
     }
 
-    private void addAllImages() {
-        for(int i=0;i<drawableNames.length;i++){
-            ImageView imageView = new ImageView(this);
-            imageView.setImageResource(drawableList.get(i));
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            imageView.setX(x_Coord);
-            imageView.setY(y_Coord);
-            imageView.setScaleX(0.4f);
-            imageView.setMaxWidth(7);
-            imageView.setMaxHeight(30);
-            imageView.setScaleY(0.4f);
-            x_Coord+=150;
-            imageView.setVisibility(View.VISIBLE);
-            alayout.addView(imageView);
-            buildSeatsList(imageView);
-            imageView.setOnTouchListener(new MyTouchListener_OLD());
+    private void setImagesContainerLayout() {
+        int y = 0;
+        for (int i = 0; i < 5; i++) {
+            redLayout = new RelativeLayout(this);
+            redLayout.setX(y);
+            redLayout.setY(0);
+            redLayout.setBackgroundColor(Color.RED);
+            redLayout.setContentDescription(TAG_LINEAR_RED);
+            redLayout.setLayoutParams(new ViewGroup.LayoutParams(300, 108));
+            redLayout.setOnDragListener(new My2DragListener());
+
+            y += 310;
+            mainLayout.addView(redLayout);
+        }
+
+    }
+
+    private void addAllImages(int numberIterations) {/*hardcodings. Could set this as parameters header*/
+        for (int i = 0; i < numberIterations; i++) {
+            addImage(drawableList.get(i));
         }
     }
 
+    private void addImage(Integer anInteger) {
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(anInteger);
+        imageView.setContentDescription(getResources().getResourceName(anInteger));
+        imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        imageView.setX(x_Coord);
+        imageView.setY(y_Coord);
+        imageView.setMaxWidth(300);
+        imageView.setMaxHeight(108);
+        //            imageView.setScaleX(1.05f);
+        //   imageView.setScaleY(0.95f);
+        x_Coord += 308;
+        imageView.setVisibility(View.VISIBLE);
+        mainLayout.addView(imageView);
+        buildSeatsList(imageView);
+        imageView.setOnTouchListener(new MyTouchListener_OLD());
+
+    }
+
+
     private void buildSeatsList(ImageView aImageView) {
-        listOfNames.add(new Seat(aImageView.getX(),aImageView.getY(),aImageView.getContentDescription(),aImageView.getParent()));
+        listOfNames.add(new Seat(aImageView.getX(), aImageView.getY(), aImageView.getContentDescription(), aImageView.getParent()));
 
     }
 
@@ -122,16 +126,115 @@ setAlayout();
         }
     }
 
-    private void shuffleDrawables(int[]resource,List newList) {
+    private void shuffleDrawables(int[] resource, List newList) {
         for (int i = 0; i < resource.length; i++) {
             newList.add(resource[i]);
         }
         Collections.shuffle(newList); /*shuffle image items*/
     }
 
+    private class My2DragListener implements View.OnDragListener {
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            float x_Coord = 0, y_Coord = 0;
+            View draggedImage = (View) event.getLocalState();
+
+//            if(DragEvent.ACTION_DRAG_STARTED==event.getAction()){
+//                v.setBackgroundColor(Color.GREEN);
+//               // aTextView.setText("");
+//              //  checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
+//                draggedImage.setVisibility(View.INVISIBLE);
+//            }
+//            if(DragEvent.ACTION_DRAG_ENDED==event.getAction()){
+//                v.setBackgroundColor(getResources().getColor(R.color.colorBright));
+//                draggedImage.setVisibility(View.VISIBLE);
+//
+//            }
+//            if(DragEvent.ACTION_DRAG_ENTERED==event.getAction()){
+//                v.setBackgroundColor(Color.BLUE);
+//            }
+//            if(DragEvent.ACTION_DRAG_EXITED==event.getAction()){
+//                v.setBackgroundColor(Color.GREEN);
+////                      checkAnswerLinearLayout.setVisibility(View.VISIBLE);
+//            }
+            if (DragEvent.ACTION_DROP == event.getAction()) {
+
+                ViewGroup owner = (ViewGroup) draggedImage.getParent();
+                ViewGroup container = (ViewGroup) v;
+                View replacingImage = container.getChildAt(0);
+
+                if (container.getChildCount() == 0) { /*add new image in empty place*/
+                    owner.removeView(draggedImage);
+                    draggedImage.setX(0);
+                    draggedImage.setY(0);
+                    container.addView(draggedImage, 0);
+                    draggedImage.setVisibility(View.VISIBLE); /***/
+
+                    return true;
+                } else if (container.getChildCount() == 1) { /* Swap images  */
+                    if (((ViewGroup) draggedImage.getParent()).getContentDescription().equals(MAIN_TAG)) {
+//                        v.setBackgroundColor(Color.BLACK);
+                        for (Seat p : listOfNames) {
+                            if (p.getMyImageDescription().toString().contains(container.getChildAt(0).getContentDescription())) {
+                                x_Coord = p.getX_coord() + 10;
+                                y_Coord = p.getY_coord();
+                                break;
+                            }
+                        }
+                        owner.removeView(draggedImage);
+                        replacingImage.setX(x_Coord);
+                        replacingImage.setY(y_Coord);
+                        draggedImage.setX(0);
+                        draggedImage.setY(0);
+                        container.addView(draggedImage);
+                        container.removeView(replacingImage);
+                        owner.addView(replacingImage);
+                        v.setVisibility(View.VISIBLE); /***/
+                        draggedImage.setVisibility(View.VISIBLE); /***/
+                        replacingImage.setVisibility(View.VISIBLE); /***/
+                        return true;
+                    } else if (((ViewGroup) draggedImage.getParent()).getContentDescription().toString().contains(TAG_LINEAR_RED)) {
+
+                        container.removeView(replacingImage);  /*SWAP linear*/
+                        owner.addView(replacingImage);
+                        replacingImage.setX(0); /*hard to get*/
+                        replacingImage.setY(0);
+                        owner.removeView(draggedImage);
+                        container.addView(draggedImage);
+                        draggedImage.setX(0);
+                        draggedImage.setY(0);
+                        v.invalidate();
+                        draggedImage.setVisibility(View.VISIBLE); /***/
+                        replacingImage.invalidate();
+                        draggedImage.invalidate();/**/
+                        replacingImage.setVisibility(View.VISIBLE); /***/
+                        return true;
+                    }
+//                if(draggedImage.getParent().toString().contains(MAIN_TAG)) {
+//
+//                }
+//                else if(draggedImage.getParent().toString().contains(TAG_LINEAR_RED)) {
+//                /**      this should be modified to satisfy the last requirement( add home)*/
+//
+//
+//
+//                }
+                }
+                v.setVisibility(View.VISIBLE);
+            }
+
+            if (event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
+                v.setVisibility(View.VISIBLE);
+            }
+
+            return true;
+        }
+    }
 
     private class MyDragListener implements View.OnDragListener {
-        float x_Coord,y_Coord;
+        float x_Coord, y_Coord;
+
         @Override
         public boolean onDrag(View v, DragEvent event) {
             View draggedImage = (View) event.getLocalState();
@@ -142,13 +245,15 @@ setAlayout();
                     ViewGroup owner = (ViewGroup) view.getParent();
                     owner.removeView(view);
                     ViewGroup container = (ViewGroup) v;
-                view.setX(my_x+=50);
+                    view.setX(0);
                     view.setY(0);
-                                 container.addView(view);
+                    container.addView(view);
+//                    if(v.getContentDescription().toString().contains("green")) {
+//                        v.setBackgroundColor(Color.BLUE);
+//                    }
+                    view.setVisibility(View.VISIBLE);
 
-                view.setVisibility(View.VISIBLE);
-
-                            break;
+                    break;
                 case DragEvent.ACTION_DRAG_ENDED:
                     //  v.invalidate();
                     break;
@@ -159,7 +264,6 @@ setAlayout();
             return true;
         }
     }
-
 
 
 }

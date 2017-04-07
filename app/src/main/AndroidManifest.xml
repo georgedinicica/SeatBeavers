@@ -21,7 +21,7 @@
         <activity
             android:name=".PlaneActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".NamesActivity"></activity>
+        <activity android:name=".NamesActivity" />
     </application>
 
 </manifest>
