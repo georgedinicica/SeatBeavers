@@ -1,6 +1,7 @@
 package catalin.seatbeavers;
 
 import android.content.ClipData;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
@@ -79,12 +80,12 @@ public class PlaneActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        toast("Activity ended");
+        toast(this,"Activity ended");
     }
 
     public void recreateActivity(View view) {
         this.recreate();
-        toast("Activity recreated");
+        toast(this,"Activity recreated");
     }
 
     public void checkSolution(View view) {
@@ -319,8 +320,8 @@ public class PlaneActivity extends AppCompatActivity {
         return updatedAnswerString;
     }
 
-    private void toast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    public static void toast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     private class MyTouchListener_OLD implements View.OnTouchListener {
