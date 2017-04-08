@@ -92,7 +92,7 @@ public class PlaneActivity extends AppCompatActivity {
         updatedAnswerString = new String(); /**this line initialises the string creation at every check */
         chosenAnswerString = createSolutionString();
         if (chosenAnswerString.contains(correctAnswerString)) {
-            aTextView.setText("The Given Answer Is Correct");
+            aTextView.setText(R.string.correctAnswerString);
             aTextView.setVisibility(View.VISIBLE);
             checkAnswerLinearLayout.setBackgroundColor(Color.GREEN);
             checkAnswerLinearLayout.setVisibility(View.VISIBLE);

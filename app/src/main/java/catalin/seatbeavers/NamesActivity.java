@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,9 +25,12 @@ public class NamesActivity extends AppCompatActivity {
     float y_Coord = 300;
     ViewGroup redLayout, mainLayout;
     Button checkSolutionButton;
+    Button aRestartButton;
+
+    TextView aTextView;
+    LinearLayout checkAnswerLinearLayout;
     List<Integer> drawableList = new ArrayList<>();
     private List<Seat> listOfNames = new ArrayList<>();
-    private static float my_x = 0;
     String MAIN_TAG = "main";
     String TAG_LINEAR_RED = "linear";
     List<ViewGroup> redLayoutContainer = new ArrayList<>();
@@ -43,24 +48,56 @@ public class NamesActivity extends AppCompatActivity {
     }
 
     private void addLayoutComponents() {
-        addSolutionButton();
+        checkSolutionButton();
         addRestartButton();
+        checkSolutionView();
+
         setImagesContainerLayout();
         addAllImages(drawableNames.length);
     }
 
-    private void addRestartButton() {
-        Button aButton = new Button(this);
+    private void checkSolutionView() {
+        checkSolutionTextView();
+        checkSolutionLayout();
+    }
 
+    private void checkSolutionLayout() {
+        checkAnswerLinearLayout = new LinearLayout(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 75);
+        params.addRule(RelativeLayout.ALIGN_PARENT_END);
+        params.addRule(RelativeLayout.BELOW, aTextView.getId());/** here*#*/
+        params.setMargins(20, 20, 20, 20);
+        checkAnswerLinearLayout.setLayoutParams(params);
+        checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
+        checkAnswerLinearLayout.setBackgroundColor(Color.GREEN);
+        mainLayout.addView(checkAnswerLinearLayout);
+    }
+
+    private void checkSolutionTextView() {
+        aTextView = new TextView(this);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_END);
+        params.addRule(RelativeLayout.BELOW, aRestartButton.getId());/** here*#*/
+        params.setMargins(20, 20, 20, 20);
+        aTextView.setTextSize(18);
+        aTextView.setLayoutParams(params);
+        aTextView.setId(R.id.aTextView);
+        mainLayout.addView(aTextView);
+    }
+
+    private void addRestartButton() {
+        aRestartButton = new Button(this);
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
         params.addRule(RelativeLayout.BELOW, checkSolutionButton.getId());/** here*#*/
         params.setMargins(20, 20, 20, 20);
-        aButton.setText(R.string.restartButtonString);
-        aButton.setBackgroundResource(R.drawable.buttonstyle);
-        aButton.setLayoutParams(params);
-        mainLayout.addView(aButton);
-        aButton.setOnClickListener(new View.OnClickListener() {
+        aRestartButton.setText(R.string.restartButtonString);
+        aRestartButton.setId(R.id.aRestartButton);
+        aRestartButton.setBackgroundResource(R.drawable.buttonstyle);
+        aRestartButton.setLayoutParams(params);
+        mainLayout.addView(aRestartButton);
+        aRestartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 recreate();
@@ -68,11 +105,11 @@ public class NamesActivity extends AppCompatActivity {
         });
     }
 
-    private void addSolutionButton() {
+    private void checkSolutionButton() {
 
         checkSolutionButton = new Button(this);
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
         params.setMarginEnd(20);
         checkSolutionButton.setId(R.id.checkSolutionButton);/*HAD TO SET THIS HERE SO UPTOP *# ITFINDS THE RESOURECE*/
@@ -185,27 +222,33 @@ public class NamesActivity extends AppCompatActivity {
 
         }
     }
-    private String createSolutionString(){
-return "";
+
+    private String createSolutionString() {
+        return "1 2 3 4 5";
     }
 
     private void checkSolution() {
+        chosenSolution();
+        if (aChosenAnswerString.contains(createSolutionString())) {
+            aTextView.setText(R.string.correctAnswerString);
+            checkAnswerLinearLayout.setVisibility(View.VISIBLE);
+            checkAnswerLinearLayout.setBackgroundColor(Color.GREEN);
+        }
+        if (!aChosenAnswerString.contains(createSolutionString())) {
+            checkAnswerLinearLayout.setVisibility(View.VISIBLE);
+            checkAnswerLinearLayout.setBackgroundColor(Color.RED);
+            aTextView.setText(R.string.incorrectAnswerString);
+        }
+
+    }
+
+    private void chosenSolution() {
         aChosenAnswerString = new String();
         for (int i = 0; i < redLayoutContainer.size(); i++) {
             if (redLayoutContainer.get(i).getChildCount() == 1) {
                 aChosenAnswerString += " " + PlaneActivity.stripNonDigits(redLayoutContainer.get(i).getChildAt(0).getContentDescription());
             }
         }
-        PlaneActivity.toast(getApplicationContext(), " filled test" + aChosenAnswerString);
-//
-//        if(redLayoutContainer.get(0).getChildCount()==0){
-//            PlaneActivity.toast(getApplicationContext(), redLayoutContainer.get(0).getContentDescription().toString());
-//        }
-//        if(redLayoutContainer.get(0).getChildCount()==1){
-//            PlaneActivity.toast(getApplicationContext()," filled test");
-//
-//        }
-
     }
 
     private class My2DragListener implements View.OnDragListener {
@@ -214,23 +257,23 @@ return "";
         public boolean onDrag(View v, DragEvent event) {
             float x_Coord = 0, y_Coord = 0;
             View draggedImage = (View) event.getLocalState();
-//            if(DragEvent.ACTION_DRAG_STARTED==event.getAction()){
-//                v.setBackgroundColor(Color.GREEN);
-//               // aTextView.setText("");
-//              //  checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
-//                draggedImage.setVisibility(View.INVISIBLE);
-//            }
-//            if(DragEvent.ACTION_DRAG_ENDED==event.getAction()){
-//                v.setBackgroundColor(getResources().getColor(R.color.colorBright));
-//                draggedImage.setVisibility(View.VISIBLE);
+            if (DragEvent.ACTION_DRAG_STARTED == event.getAction()) {
+                aTextView.setText("");
+                // aTextView.setText("");
+                checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
+                draggedImage.setVisibility(View.INVISIBLE);
+            }
+            if (DragEvent.ACTION_DRAG_ENDED == event.getAction()) {
+
+                draggedImage.setVisibility(View.VISIBLE);
 //
-//            }
+            }
 //            if(DragEvent.ACTION_DRAG_ENTERED==event.getAction()){
 //                v.setBackgroundColor(Color.BLUE);
 //            }
 //            if(DragEvent.ACTION_DRAG_EXITED==event.getAction()){
 //                v.setBackgroundColor(Color.GREEN);
-////                      checkAnswerLinearLayout.setVisibility(View.VISIBLE);
+            // checkAnswerLinearLayout.setVisibility(View.VISIBLE);
 //            }
             if (DragEvent.ACTION_DROP == event.getAction()) {
                 ViewGroup owner = (ViewGroup) draggedImage.getParent();

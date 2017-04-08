@@ -2,4 +2,6 @@
 <resources>
     <item name="startButton" type="id">Launch Plane</item>
     <item name="checkSolutionButton" type="id" />
+    <item name="aRestartButton" type="id" />
+    <item name="aTextView" type="id" />
 </resources>
