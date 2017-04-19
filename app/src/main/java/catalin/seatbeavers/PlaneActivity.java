@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class PlaneActivity extends AppCompatActivity {
-/*catalin*/
+    /*catalin*/
     int[] linearLayoutRedIDs = new int[]{R.id.linearred1, R.id.linearred2, R.id.linearred3, R.id.linearred4, R.id.linearred5, R.id.linearred6,
             R.id.linearred7, R.id.linearred8, R.id.linearred9, R.id.linearred10, R.id.linearred11, R.id.linearred12,
             R.id.linearred13, R.id.linearred14, R.id.linearred15, R.id.linearred16, R.id.linearred17, R.id.linearred18};
@@ -52,16 +52,16 @@ public class PlaneActivity extends AppCompatActivity {
     int miniumNumberOfSeats = 5;
     int maximumNumberOfSeats = 13;
     String updatedAnswerString;
-    String correctAnswerString=new String() ;
-    String chosenAnswerString=new String() ;
+    String correctAnswerString = new String();
+    String chosenAnswerString = new String();
     ImageView aImageView;
     TextView aTextView;
     List<Integer> drawableList = new ArrayList<>();
     LinearLayout checkAnswerLinearLayout, redLayout;
-    List<Seat> listOfSeats =new ArrayList<>();
-    int x_coord_Position=0,y_coord_Position=662; // coordinates used to place images Programatically
+    List<Seat> listOfSeats = new ArrayList<>();
+    int x_coord_Position = 0, y_coord_Position = 662; // coordinates used to place images Programatically
 
-//k
+    //k
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +69,7 @@ public class PlaneActivity extends AppCompatActivity {
         //y_coord_Position=findViewById(R.id.activity_plane).getHeight()/2;
         initialise();/* sets the Number of Plane Seats and the Red Check Answer Rectangle*/
         shuffleDrawables(); /*shuffle image items*/
-        imagesLayoutComponent(x_coord_Position,y_coord_Position);/* connects the image Resources @drawables with the Blue layout*/
+        imagesLayoutComponent(x_coord_Position, y_coord_Position);/* connects the image Resources @drawables with the Blue layout*/
         addDragDropComponent();/*sets  the listeners */
         saveCorrectOrderOfImages();/*creates the correct answer string*/
 
@@ -80,12 +80,12 @@ public class PlaneActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        toast(this,"Activity ended");
+        toast(this, "Activity ended");
     }
 
     public void recreateActivity(View view) {
         this.recreate();
-        toast(this,"Activity recreated");
+        toast(this, "Activity recreated");
     }
 
     public void checkSolution(View view) {
@@ -123,7 +123,7 @@ public class PlaneActivity extends AppCompatActivity {
 
     private void initialise() {
         checkAnswerLinearLayout = (LinearLayout) findViewById(R.id.testAnswerLayout);
-        aTextView=(TextView)findViewById(R.id.textView);
+        aTextView = (TextView) findViewById(R.id.textView);
         aTextView.setVisibility(View.INVISIBLE);
         numberOfSeats = generateMyRandom(miniumNumberOfSeats, maximumNumberOfSeats);
 
@@ -137,8 +137,8 @@ public class PlaneActivity extends AppCompatActivity {
         Collections.shuffle(drawableList); /*shuffle image items*/
     }
 
-    private void imagesLayoutComponent(int x,int y) {
-        int x_coord=x,y_coord=y;
+    private void imagesLayoutComponent(int x, int y) {
+        int x_coord = x, y_coord = y;
         findViewById(R.id.activity_plane).setOnDragListener(new MyDragListener()); /*sets the Customized Drag listener For the main activity*/
 
         for (int i = 0; i < numberOfSeats; i++) {
@@ -155,13 +155,13 @@ public class PlaneActivity extends AppCompatActivity {
             aImageView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent event) {
-                    Point p=new Point(1,1);
-                    Point s=new Point(44,44);
+                    Point p = new Point(1, 1);
+                    Point s = new Point(44, 44);
                     ClipData data = ClipData.newPlainText("", "");
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                    shadowBuilder.onProvideShadowMetrics(s,p);
+                    shadowBuilder.onProvideShadowMetrics(s, p);
 
-                    if(event.getAction()==MotionEvent.ACTION_DOWN) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             view.startDragAndDrop(data, shadowBuilder, view, 0);
                             view.setDuplicateParentStateEnabled(true);
@@ -169,7 +169,7 @@ public class PlaneActivity extends AppCompatActivity {
                         } else {
                             view.startDrag(data, shadowBuilder, view, 0);
                         }
-                    return true;
+                        return true;
                     }
 
                     view.invalidate();
@@ -181,101 +181,100 @@ public class PlaneActivity extends AppCompatActivity {
     }
 
     private void buildSeatsList(View aImageView) {
-        listOfSeats.add(new Seat(aImageView.getX(),aImageView.getY(),aImageView.getContentDescription(),aImageView.getParent()));
+        listOfSeats.add(new Seat(aImageView.getX(), aImageView.getY(), aImageView.getContentDescription(), aImageView.getParent()));
     }
 
     private void addDragDropComponent() {
         for (int i = 0; i < numberOfSeats; i++) {
             findViewById(linearLayoutRedIDs[i]).setVisibility(View.VISIBLE);
             findViewById(linearLayoutRedIDs[i]).setOnDragListener(new View.OnDragListener() {
-            float x_Coord,y_Coord;
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                View draggedImage = (View) event.getLocalState();
+                float x_Coord, y_Coord;
 
-        if(DragEvent.ACTION_DRAG_STARTED==event.getAction()){
-            v.setBackgroundColor(Color.GREEN);
-            aTextView.setText("");
-            checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
-            draggedImage.setVisibility(View.INVISIBLE);
-        }
-        if(DragEvent.ACTION_DRAG_ENDED==event.getAction()){
-            v.setBackgroundColor(getResources().getColor(R.color.colorBright));
-            draggedImage.setVisibility(View.VISIBLE);
+                @Override
+                public boolean onDrag(View v, DragEvent event) {
+                    View draggedImage = (View) event.getLocalState();
 
-        }
-        if(DragEvent.ACTION_DRAG_ENTERED==event.getAction()){
-            v.setBackgroundColor(Color.BLUE);
-        }
-        if(DragEvent.ACTION_DRAG_EXITED==event.getAction()){
-            v.setBackgroundColor(Color.GREEN);
-//                      checkAnswerLinearLayout.setVisibility(View.VISIBLE);
-        }
-        if (DragEvent.ACTION_DROP == event.getAction()) {
-
-            ViewGroup owner = (ViewGroup) draggedImage.getParent();
-            ViewGroup container = (ViewGroup) v;
-            View replacingImage = container.getChildAt(0);
-
-            if(container.getChildCount()==0){ /*add new image in empty place*/
-                owner.removeView(draggedImage);
-                draggedImage.setX(0);
-                draggedImage.setY(0);
-                container.addView(draggedImage,0);
-                draggedImage.setVisibility(View.VISIBLE); /***/
-                return true;
-            }
-            else if(container.getChildCount()==1) { /* Swap images  */
-                if(draggedImage.getParent().toString().contains("activity_plane")) {
-                    for (Seat p : listOfSeats) {
-                        if (p.getMyImageDescription() == container.getChildAt(0).getContentDescription()) {
-                            x_Coord = p.getX_coord() + 10;
-                            y_Coord = p.getY_coord();
-                            break;
-                        }
+                    if (DragEvent.ACTION_DRAG_STARTED == event.getAction()) {
+                        v.setBackgroundColor(Color.GREEN);
+                        aTextView.setText("");
+                        checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
+                        draggedImage.setVisibility(View.INVISIBLE);
                     }
-                    owner.removeView(draggedImage);
-                    replacingImage.setX(x_Coord);
-                    replacingImage.setY(y_Coord);
-                    draggedImage.setX(0);
-                    draggedImage.setY(0);
-                    container.addView(draggedImage);
-                    container.removeView(replacingImage);
-                    owner.addView(replacingImage);
-                    v.setVisibility(View.VISIBLE); /***/
-                    draggedImage.setVisibility(View.VISIBLE); /***/
-                    replacingImage.setVisibility(View.VISIBLE); /***/
-                    return  true;
-                }
-                else if(draggedImage.getParent().toString().contains("linear")) {
+                    if (DragEvent.ACTION_DRAG_ENDED == event.getAction()) {
+                        v.setBackgroundColor(getResources().getColor(R.color.colorBright));
+                        draggedImage.setVisibility(View.VISIBLE);
+
+                    }
+                    if (DragEvent.ACTION_DRAG_ENTERED == event.getAction()) {
+                        v.setBackgroundColor(Color.BLUE);
+                    }
+                    if (DragEvent.ACTION_DRAG_EXITED == event.getAction()) {
+                        v.setBackgroundColor(Color.GREEN);
+//                      checkAnswerLinearLayout.setVisibility(View.VISIBLE);
+                    }
+                    if (DragEvent.ACTION_DROP == event.getAction()) {
+
+                        ViewGroup owner = (ViewGroup) draggedImage.getParent();
+                        ViewGroup container = (ViewGroup) v;
+                        View replacingImage = container.getChildAt(0);
+
+                        if (container.getChildCount() == 0) { /*add new image in empty place*/
+                            owner.removeView(draggedImage);
+                            draggedImage.setX(0);
+                            draggedImage.setY(0);
+                            container.addView(draggedImage, 0);
+                            draggedImage.setVisibility(View.VISIBLE); /***/
+                            return true;
+                        } else if (container.getChildCount() == 1) { /* Swap images  */
+                            if (draggedImage.getParent().toString().contains("activity_plane")) {
+                                for (Seat p : listOfSeats) {
+                                    if (p.getMyImageDescription() == container.getChildAt(0).getContentDescription()) {
+                                        x_Coord = p.getX_coord() + 10;
+                                        y_Coord = p.getY_coord();
+                                        break;
+                                    }
+                                }
+                                owner.removeView(draggedImage);
+                                replacingImage.setX(x_Coord);
+                                replacingImage.setY(y_Coord);
+                                draggedImage.setX(0);
+                                draggedImage.setY(0);
+                                container.addView(draggedImage);
+                                container.removeView(replacingImage);
+                                owner.addView(replacingImage);
+                                v.setVisibility(View.VISIBLE); /***/
+                                draggedImage.setVisibility(View.VISIBLE); /***/
+                                replacingImage.setVisibility(View.VISIBLE); /***/
+                                return true;
+                            } else if (draggedImage.getParent().toString().contains("linear")) {
 /**      this should be modified to satisfy the last requirement( add home)*/
 
-                    container.removeView(replacingImage);  /*SWAP linear*/
-                    owner.addView(replacingImage);
-                    replacingImage.setX(0); /*hard to get*/
-                    replacingImage.setY(0);
-                    owner.removeView(draggedImage);
-                    container.addView(draggedImage);
-                    draggedImage.setX(0);
-                    draggedImage.setY(0);
-                    v.invalidate();
-                    draggedImage.setVisibility(View.VISIBLE); /***/
-                    replacingImage.invalidate();
-                    draggedImage.invalidate();/**/
-                    replacingImage.setVisibility(View.VISIBLE); /***/
-                    return  true;
+                                container.removeView(replacingImage);  /*SWAP linear*/
+                                owner.addView(replacingImage);
+                                replacingImage.setX(0); /*hard to get*/
+                                replacingImage.setY(0);
+                                owner.removeView(draggedImage);
+                                container.addView(draggedImage);
+                                draggedImage.setX(0);
+                                draggedImage.setY(0);
+                                v.invalidate();
+                                draggedImage.setVisibility(View.VISIBLE); /***/
+                                replacingImage.invalidate();
+                                draggedImage.invalidate();/**/
+                                replacingImage.setVisibility(View.VISIBLE); /***/
+                                return true;
 
+                            }
+                        }
+                        v.setVisibility(View.VISIBLE);
+                    }
+                    if (event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
+                        v.setVisibility(View.VISIBLE);
+                    }
+
+                    return true;
                 }
-            }
-            v.setVisibility(View.VISIBLE);
-        }
-        if(event.getAction()==DragEvent.ACTION_DRAG_ENDED){
-            v.setVisibility(View.VISIBLE);
-        }
-
-        return true;
-    }
-});
+            });
 
         }
     }
@@ -314,7 +313,7 @@ public class PlaneActivity extends AppCompatActivity {
             redLayout = (LinearLayout) findViewById(linearLayoutRedIDs[i]);
             if (redLayout.getChildCount() > 0) {
                 String s = stripNonDigits(redLayout.getChildAt(0).getContentDescription());
-                updatedAnswerString =updatedAnswerString+" "+s;
+                updatedAnswerString = updatedAnswerString + " " + s;
             }
         }
         return updatedAnswerString;
@@ -332,15 +331,15 @@ public class PlaneActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     view.startDragAndDrop(data, shadowBuilder, view, 0);
                     //view.invalidate();
-                  //  view.setVisibility(View.VISIBLE);
+                    //  view.setVisibility(View.VISIBLE);
                 } else {
                     ///  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     view.startDrag(data, shadowBuilder, view, 0);
-                  //  buildSeatsList(view);
+                    //  buildSeatsList(view);
                 }
             }
             //    view.setVisibility(View.VISIBLE);
-          //  view.invalidate();
+            //  view.invalidate();
             //view.setBackgroundColor(Color.RED);
             return true;
 
@@ -349,7 +348,8 @@ public class PlaneActivity extends AppCompatActivity {
     }
 
     private class MyDragListener implements View.OnDragListener {
-        float x_Coord,y_Coord;
+        float x_Coord, y_Coord;
+
         @Override
         public boolean onDrag(View v, DragEvent event) {
             switch (event.getAction()) {
@@ -369,23 +369,23 @@ public class PlaneActivity extends AppCompatActivity {
                         owner.removeView(view);
                         ViewGroup container = (ViewGroup) v;
 
-                        for(Seat s:listOfSeats){
-                            if(s.getMyImageDescription()==view.getContentDescription()){
-                               x_Coord=s.getX_coord();
-                                y_Coord=(s.getY_coord());
+                        for (Seat s : listOfSeats) {
+                            if (s.getMyImageDescription() == view.getContentDescription()) {
+                                x_Coord = s.getX_coord();
+                                y_Coord = (s.getY_coord());
                                 break;
                             }
                         }
                         view.setX(x_Coord);
                         view.setY(y_Coord);
-                       container.addView(view);
+                        container.addView(view);
                         view.setVisibility(View.VISIBLE);
                         break;
 
                     }
 //                    break;
                 case DragEvent.ACTION_DRAG_ENDED:
-                  //  v.invalidate();
+                    //  v.invalidate();
                     break;
                 default:
                     v.invalidate();

@@ -22,6 +22,9 @@
             android:name=".PlaneActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".NamesActivity" />
+        <activity android:name=".MyPlaneActivity"
+            android:parentActivityName=".MainActivity"></activity>
+
     </application>
 
 </manifest>

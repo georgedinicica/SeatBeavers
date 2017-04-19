@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         startButton=(Button) findViewById(R.id.startButton);
     }
     public void startSeatingBeavers(View view) {
-        Intent intent=new Intent(this,PlaneActivity.class);
+        Intent intent=new Intent(this,MyPlaneActivity.class);
 
         startActivity(intent);
     }

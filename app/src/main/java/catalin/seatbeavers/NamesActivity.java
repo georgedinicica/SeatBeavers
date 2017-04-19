@@ -24,13 +24,13 @@ public class NamesActivity extends AppCompatActivity {
     float x_Coord = 0;
     float y_Coord = 300;
     ViewGroup redLayout, mainLayout;
-    Button checkSolutionButton;
-    Button aRestartButton;
+        Button aCheckButton;
+        Button aRestartButton;
 
-    TextView aTextView;
-    LinearLayout checkAnswerLinearLayout;
+        TextView aTextView;
+        LinearLayout checkAnswerLinearLayout;
     List<Integer> drawableList = new ArrayList<>();
-    private List<Seat> listOfNames = new ArrayList<>();
+    List<Seat> listOfNames = new ArrayList<>();
     String MAIN_TAG = "main";
     String TAG_LINEAR_RED = "linear";
     List<ViewGroup> redLayoutContainer = new ArrayList<>();
@@ -42,18 +42,19 @@ public class NamesActivity extends AppCompatActivity {
         aChosenAnswerString = new String();
         setMainLayout(10, 10);
         shuffleDrawables(drawableNames, drawableList);
+
         addLayoutComponents();
 
         setContentView(mainLayout);
     }
 
     private void addLayoutComponents() {
-        checkSolutionButton();
+        checkSolutionBtn();
         addRestartButton();
         checkSolutionView();
 
-        setImagesContainerLayout();
         addAllImages(drawableNames.length);
+        setImagesContainerLayout();
     }
 
     private void checkSolutionView() {
@@ -61,7 +62,7 @@ public class NamesActivity extends AppCompatActivity {
         checkSolutionLayout();
     }
 
-    private void checkSolutionLayout() {
+    private void  checkSolutionLayout() {
         checkAnswerLinearLayout = new LinearLayout(this);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 75);
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
@@ -90,7 +91,7 @@ public class NamesActivity extends AppCompatActivity {
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
-        params.addRule(RelativeLayout.BELOW, checkSolutionButton.getId());/** here*#*/
+        params.addRule(RelativeLayout.BELOW, aCheckButton.getId());/** here*#*/
         params.setMargins(20, 20, 20, 20);
         aRestartButton.setText(R.string.restartButtonString);
         aRestartButton.setId(R.id.aRestartButton);
@@ -105,20 +106,20 @@ public class NamesActivity extends AppCompatActivity {
         });
     }
 
-    private void checkSolutionButton() {
+    private void checkSolutionBtn() {
 
-        checkSolutionButton = new Button(this);
+        aCheckButton = new Button(this);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
         params.setMarginEnd(20);
-        checkSolutionButton.setId(R.id.checkSolutionButton);/*HAD TO SET THIS HERE SO UPTOP *# ITFINDS THE RESOURECE*/
-        checkSolutionButton.setText(R.string.test);
-        checkSolutionButton.setContentDescription("checkSolution");
-        checkSolutionButton.setBackgroundResource(R.drawable.buttonstyle);
-        checkSolutionButton.setLayoutParams(params);
-        mainLayout.addView(checkSolutionButton);
-        checkSolutionButton.setOnClickListener(new MyClickListener());
+        aCheckButton.setId(R.id.checkSolutionButton);/*HAD TO SET THIS HERE SO UPTOP *# ITFINDS THE RESOURECE*/
+        aCheckButton.setText(R.string.test);
+        aCheckButton.setContentDescription("checkSolution");
+        aCheckButton.setBackgroundResource(R.drawable.buttonstyle);
+        aCheckButton.setLayoutParams(params);
+        mainLayout.addView(aCheckButton);
+        aCheckButton.setOnClickListener(new MyClickListener());
     }
 
     private void setMainLayout(int xCoord, int yCoord) {
@@ -219,7 +220,7 @@ public class NamesActivity extends AppCompatActivity {
         public void onClick(View v) {
 //            PlaneActivity.toast(getApplicationContext(),"test");
             checkSolution();
-
+//            PlaneActivity.toast(getApplicationContext(), listOfNames.get(0).getMyImageDescription().toString());
         }
     }
 
@@ -279,6 +280,7 @@ public class NamesActivity extends AppCompatActivity {
                 ViewGroup owner = (ViewGroup) draggedImage.getParent();
                 ViewGroup container = (ViewGroup) v;
                 View replacingImage = container.getChildAt(0);
+
                 if (container.getChildCount() == 0) { /*add new image in empty place*/
                     viewDragWork(owner, container, draggedImage, 0, 0);/***/
                     return true;
@@ -300,10 +302,10 @@ public class NamesActivity extends AppCompatActivity {
                     viewDragWork(owner, container, draggedImage, 0, 0);
                     v.invalidate();
                     replacingImage.invalidate();
-                    draggedImage.invalidate();/**/
+                    draggedImage.invalidate();
                     return true;
                 }
-                v.setVisibility(View.VISIBLE);
+//                v.setVisibility(View.VISIBLE);
                 if (!v.getContentDescription().toString().contains(TAG_LINEAR_RED)) {
                     for (Seat s : listOfNames) {
                         if (s.getMyImageDescription() == draggedImage.getContentDescription()) {
@@ -320,6 +322,7 @@ public class NamesActivity extends AppCompatActivity {
             if (event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
                 v.setVisibility(View.VISIBLE);
             }
+            v.invalidate();
             return true;
         }
     }

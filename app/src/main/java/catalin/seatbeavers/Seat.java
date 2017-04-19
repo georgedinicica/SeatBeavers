@@ -2,9 +2,6 @@ package catalin.seatbeavers;
 
 import android.view.ViewParent;
 
-/**
- * Created by Catalin on 23/03/2017.
- */
 
 class Seat {
     String resourceName;
