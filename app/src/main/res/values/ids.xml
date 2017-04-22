@@ -4,4 +4,5 @@
     <item name="checkSolutionButton" type="id" />
     <item name="aRestartButton" type="id" />
     <item name="aTextView" type="id" />
+    <item name="anotherButton" type="id">anotherButton</item>
 </resources>

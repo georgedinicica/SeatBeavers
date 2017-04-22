@@ -24,19 +24,19 @@ public class NamesActivity extends AppCompatActivity {
     float x_Coord = 0;
     float y_Coord = 300;
     ViewGroup redLayout, mainLayout;
-        Button aCheckButton;
-        Button aRestartButton;
+    Button aCheckButton;
+    Button aRestartButton;
 
-        TextView aTextView;
-        LinearLayout checkAnswerLinearLayout;
+    TextView aTextView;
+    LinearLayout checkAnswerLinearLayout;
     List<Integer> drawableList = new ArrayList<>();
-    List<Seat> listOfNames = new ArrayList<>();
+    List<MyImage> listOfNames = new ArrayList<>();
     String MAIN_TAG = "main";
     String TAG_LINEAR_RED = "linear";
     List<ViewGroup> redLayoutContainer = new ArrayList<>();
     String aChosenAnswerString;
 
-    @Override
+    @Override /*EACH SUB CLASS ACtivity has its own OnCreate*/
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         aChosenAnswerString = new String();
@@ -48,6 +48,7 @@ public class NamesActivity extends AppCompatActivity {
         setContentView(mainLayout);
     }
 
+    /*This is in the base class*/
     private void addLayoutComponents() {
         checkSolutionBtn();
         addRestartButton();
@@ -57,12 +58,14 @@ public class NamesActivity extends AppCompatActivity {
         setImagesContainerLayout();
     }
 
+    /*This is in the base class*/
     private void checkSolutionView() {
         checkSolutionTextView();
         checkSolutionLayout();
     }
 
-    private void  checkSolutionLayout() {
+    /*This is in the base class*/
+    private void checkSolutionLayout() {
         checkAnswerLinearLayout = new LinearLayout(this);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 75);
         params.addRule(RelativeLayout.ALIGN_PARENT_END);
@@ -74,6 +77,7 @@ public class NamesActivity extends AppCompatActivity {
         mainLayout.addView(checkAnswerLinearLayout);
     }
 
+    /*This is in the base class*/
     private void checkSolutionTextView() {
         aTextView = new TextView(this);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -86,6 +90,7 @@ public class NamesActivity extends AppCompatActivity {
         mainLayout.addView(aTextView);
     }
 
+    /*This is in the base class*/
     private void addRestartButton() {
         aRestartButton = new Button(this);
 
@@ -106,6 +111,7 @@ public class NamesActivity extends AppCompatActivity {
         });
     }
 
+    /*This is in the base class*/
     private void checkSolutionBtn() {
 
         aCheckButton = new Button(this);
@@ -122,6 +128,7 @@ public class NamesActivity extends AppCompatActivity {
         aCheckButton.setOnClickListener(new MyClickListener());
     }
 
+    /*This is in the base class*/
     private void setMainLayout(int xCoord, int yCoord) {
 
         mainLayout = new RelativeLayout(this);
@@ -130,7 +137,15 @@ public class NamesActivity extends AppCompatActivity {
         mainLayout.setX(xCoord);
         mainLayout.setContentDescription(MAIN_TAG);
         mainLayout.setBackgroundColor(Color.LTGRAY);
-        mainLayout.setOnDragListener(new My2DragListener());
+
+        doTheDrag(listOfNames);
+
+    }
+
+    private void doTheDrag(List<MyImage> listOfNames) {
+//        mainLayout.setOnDragListener(new My2DragListener());
+
+        mainLayout.setOnDragListener(new Drag(listOfNames, MAIN_TAG, TAG_LINEAR_RED));
     }
 
     private void setImagesContainerLayout() {
@@ -142,7 +157,9 @@ public class NamesActivity extends AppCompatActivity {
             redLayout.setBackgroundColor(Color.RED);
             redLayout.setContentDescription(TAG_LINEAR_RED + (i + 1));
             redLayout.setLayoutParams(new ViewGroup.LayoutParams(300, 108));
-            redLayout.setOnDragListener(new My2DragListener());
+//            redLayout.setOnDragListener(new My2DragListener());
+            redLayout.setOnDragListener(new Drag(listOfNames, MAIN_TAG, TAG_LINEAR_RED));
+
             y += 310;
             redLayoutContainer.add(redLayout);
             mainLayout.addView(redLayout);
@@ -175,8 +192,9 @@ public class NamesActivity extends AppCompatActivity {
         imageView.setOnTouchListener(new MyTouchListener_OLD());
     }
 
+    /*This creates the a List of Images*/
     private void buildSeatsList(ImageView aImageView) {
-        listOfNames.add(new Seat(aImageView.getX(), aImageView.getY(), aImageView.getContentDescription(), aImageView.getParent()));
+        listOfNames.add(new MyImage(aImageView.getX(), aImageView.getY(), aImageView.getContentDescription(), aImageView.getParent()));
     }
 
     private void shuffleDrawables(int[] resource, List newList) {
@@ -193,9 +211,10 @@ public class NamesActivity extends AppCompatActivity {
         container.addView(image);
     }
 
-    private class MyTouchListener_OLD implements View.OnTouchListener {
+    public class MyTouchListener_OLD implements View.OnTouchListener {
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                resetSolutionLayout(aTextView, checkAnswerLinearLayout);
                 ClipData data = ClipData.newPlainText("", "");
                 View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -213,6 +232,13 @@ public class NamesActivity extends AppCompatActivity {
             //view.setBackgroundColor(Color.RED);
             return true;
         }
+
+    }
+
+
+    private void resetSolutionLayout(TextView textView, LinearLayout linearLayout) {
+        textView.setText("");
+        linearLayout.setVisibility(View.INVISIBLE);
     }
 
     private class MyClickListener implements View.OnClickListener {
@@ -222,6 +248,7 @@ public class NamesActivity extends AppCompatActivity {
             checkSolution();
 //            PlaneActivity.toast(getApplicationContext(), listOfNames.get(0).getMyImageDescription().toString());
         }
+
     }
 
     private String createSolutionString() {
@@ -252,16 +279,14 @@ public class NamesActivity extends AppCompatActivity {
         }
     }
 
-    private class My2DragListener implements View.OnDragListener {
 
+    public class My2DragListener implements View.OnDragListener {
         @Override
         public boolean onDrag(View v, DragEvent event) {
             float x_Coord = 0, y_Coord = 0;
             View draggedImage = (View) event.getLocalState();
             if (DragEvent.ACTION_DRAG_STARTED == event.getAction()) {
-                aTextView.setText("");
-                // aTextView.setText("");
-                checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
+                //resetSolutionLayout(); //clears textView and hides CheckSolutionLayout
                 draggedImage.setVisibility(View.INVISIBLE);
             }
             if (DragEvent.ACTION_DRAG_ENDED == event.getAction()) {
@@ -277,6 +302,7 @@ public class NamesActivity extends AppCompatActivity {
             // checkAnswerLinearLayout.setVisibility(View.VISIBLE);
 //            }
             if (DragEvent.ACTION_DROP == event.getAction()) {
+
                 ViewGroup owner = (ViewGroup) draggedImage.getParent();
                 ViewGroup container = (ViewGroup) v;
                 View replacingImage = container.getChildAt(0);
@@ -286,13 +312,14 @@ public class NamesActivity extends AppCompatActivity {
                     return true;
                 }
                 if (container.getChildCount() == 1 && ((ViewGroup) draggedImage.getParent()).getContentDescription().equals(MAIN_TAG)) {
-                    for (Seat p : listOfNames) {
+                    for (MyImage p : listOfNames) {
                         if (p.getMyImageDescription().toString().contains(container.getChildAt(0).getContentDescription())) {
                             x_Coord = p.getX_coord() + 10;
                             y_Coord = p.getY_coord();
                             break;
                         }
                     }
+
                     viewDragWork(owner, container, draggedImage, 0, 0);
                     viewDragWork(container, owner, replacingImage, x_Coord, y_Coord);
                     return true;
@@ -307,16 +334,26 @@ public class NamesActivity extends AppCompatActivity {
                 }
 //                v.setVisibility(View.VISIBLE);
                 if (!v.getContentDescription().toString().contains(TAG_LINEAR_RED)) {
-                    for (Seat s : listOfNames) {
-                        if (s.getMyImageDescription() == draggedImage.getContentDescription()) {
-                            x_Coord = s.getX_coord();
-                            y_Coord = (s.getY_coord());
+                    for (int i = 0; i < listOfNames.size(); i++) {
+
+                        if (listOfNames.get(i).getMyImageDescription() == draggedImage.getContentDescription()) {
+                            x_Coord = listOfNames.get(i).getX_coord();
+                            y_Coord = listOfNames.get(i).getY_coord();
                             break;
+
                         }
+
                     }
-                    //redLayout.setBackgroundColor(Color.BLACK);
+//                    for (Seat s : listOfNames) {
+//                        if (s.getMyImageDescription() == draggedImage.getContentDescription()) {
+//                            x_Coord = s.getX_coord();
+//                            y_Coord = (s.getY_coord());
+//                            break;
+//                        }
+//                    }
                     viewDragWork(owner, container, draggedImage, x_Coord, y_Coord);
-                    return true;
+                    //  redLayout.setBackgroundColor(Color.BLACK);
+                    //return true;
                 }
             }
             if (event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
@@ -325,6 +362,7 @@ public class NamesActivity extends AppCompatActivity {
             v.invalidate();
             return true;
         }
+
     }
 
 

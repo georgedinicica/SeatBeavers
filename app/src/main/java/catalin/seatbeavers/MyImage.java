@@ -3,14 +3,14 @@ package catalin.seatbeavers;
 import android.view.ViewParent;
 
 
-class Seat {
+class MyImage {
     String resourceName;
     private float x_coord;
     private float y_coord;
     private CharSequence description;
     ViewParent aviewParent;
 
-    public Seat(float x_coord, float y_coord, CharSequence description, ViewParent aviewParent) {
+    public MyImage(float x_coord, float y_coord, CharSequence description, ViewParent aviewParent) {
         this.x_coord = x_coord;
         this.y_coord = y_coord;
         this.description = description;

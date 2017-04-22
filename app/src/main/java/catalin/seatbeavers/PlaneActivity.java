@@ -58,7 +58,7 @@ public class PlaneActivity extends AppCompatActivity {
     TextView aTextView;
     List<Integer> drawableList = new ArrayList<>();
     LinearLayout checkAnswerLinearLayout, redLayout;
-    List<Seat> listOfSeats = new ArrayList<>();
+    List<MyImage> listOfSeats = new ArrayList<>();
     int x_coord_Position = 0, y_coord_Position = 662; // coordinates used to place images Programatically
 
     //k
@@ -181,7 +181,7 @@ public class PlaneActivity extends AppCompatActivity {
     }
 
     private void buildSeatsList(View aImageView) {
-        listOfSeats.add(new Seat(aImageView.getX(), aImageView.getY(), aImageView.getContentDescription(), aImageView.getParent()));
+        listOfSeats.add(new MyImage(aImageView.getX(), aImageView.getY(), aImageView.getContentDescription(), aImageView.getParent()));
     }
 
     private void addDragDropComponent() {
@@ -227,7 +227,7 @@ public class PlaneActivity extends AppCompatActivity {
                             return true;
                         } else if (container.getChildCount() == 1) { /* Swap images  */
                             if (draggedImage.getParent().toString().contains("activity_plane")) {
-                                for (Seat p : listOfSeats) {
+                                for (MyImage p : listOfSeats) {
                                     if (p.getMyImageDescription() == container.getChildAt(0).getContentDescription()) {
                                         x_Coord = p.getX_coord() + 10;
                                         y_Coord = p.getY_coord();
@@ -369,7 +369,7 @@ public class PlaneActivity extends AppCompatActivity {
                         owner.removeView(view);
                         ViewGroup container = (ViewGroup) v;
 
-                        for (Seat s : listOfSeats) {
+                        for (MyImage s : listOfSeats) {
                             if (s.getMyImageDescription() == view.getContentDescription()) {
                                 x_Coord = s.getX_coord();
                                 y_Coord = (s.getY_coord());
