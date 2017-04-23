@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startNamesApp(View view) {
-        Intent intent = new Intent(this, NamesActivity.class);
+        Intent intent = new Intent(this, MyNameActivity.class);
+        //Intent intent = new Intent(this, NamesActivity.class);
 
         startActivity(intent);
     }

@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public class BasePresenter {
-    ImageRepositoryImpl imageRepository = new ImageRepositoryImpl();
+    ImageRepository imageRepository = new ImageRepository();
     List<Integer> drawableList = new ArrayList<>();
     void shuffleDrawables(int[] resource, List newList) {
         for (int i = 0; i < resource.length; i++) {

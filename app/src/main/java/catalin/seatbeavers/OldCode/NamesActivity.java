@@ -1,4 +1,4 @@
-package catalin.seatbeavers;
+package catalin.seatbeavers.OldCode;
 
 import android.content.ClipData;
 import android.graphics.Color;
@@ -18,6 +18,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import catalin.seatbeavers.OldCode.MyImage;
+import catalin.seatbeavers.R;
 
 public class NamesActivity extends AppCompatActivity {
     int[] drawableNames = new int[]{R.drawable.alena1, R.drawable.bruno2, R.drawable.cyril3, R.drawable.dana4, R.drawable.eva5};
@@ -141,13 +144,13 @@ public class NamesActivity extends AppCompatActivity {
         doTheDrag(listOfNames);
 
     }
-
+        /*onClickListener*/
     private void doTheDrag(List<MyImage> listOfNames) {
 //        mainLayout.setOnDragListener(new My2DragListener());
 
-        mainLayout.setOnDragListener(new Drag(listOfNames, MAIN_TAG, TAG_LINEAR_RED));
+//        mainLayout.setOnDragListener(new MyDrag(listOfNames, MAIN_TAG, TAG_LINEAR_RED));
     }
-
+    /*This is in the base class*/
     private void setImagesContainerLayout() {
         int y = 0;
         for (int i = 0; i < 5; i++) {
@@ -158,7 +161,7 @@ public class NamesActivity extends AppCompatActivity {
             redLayout.setContentDescription(TAG_LINEAR_RED + (i + 1));
             redLayout.setLayoutParams(new ViewGroup.LayoutParams(300, 108));
 //            redLayout.setOnDragListener(new My2DragListener());
-            redLayout.setOnDragListener(new Drag(listOfNames, MAIN_TAG, TAG_LINEAR_RED));
+           // redLayout.setOnDragListener(new MyDrag(listOfNames, MAIN_TAG, TAG_LINEAR_RED));
 
             y += 310;
             redLayoutContainer.add(redLayout);
@@ -274,7 +277,8 @@ public class NamesActivity extends AppCompatActivity {
         aChosenAnswerString = new String();
         for (int i = 0; i < redLayoutContainer.size(); i++) {
             if (redLayoutContainer.get(i).getChildCount() == 1) {
-                aChosenAnswerString += " " + PlaneActivity.stripNonDigits(redLayoutContainer.get(i).getChildAt(0).getContentDescription());
+                //aChosenAnswerString += " " + stripNonDigits(redLayoutContainer.get(i).getChildAt(0).getContentDescription());
+//                aChosenAnswerString="cha"
             }
         }
     }

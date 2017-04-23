@@ -1,7 +1,6 @@
 package catalin.seatbeavers;
 
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
  * Created by Catalin on 22/04/2017.
  */
 
-public class MyPlanePresenter extends BasePresenter implements IPresenter {
+    class MyPlanePresenter extends BasePresenter implements IPresenter {
 
     private List<MyImage> listOfSeats=new ArrayList<>();
 
@@ -18,7 +17,7 @@ public class MyPlanePresenter extends BasePresenter implements IPresenter {
         shuffleDrawables(imageRepository.getSeatsDrawables(), drawableList);
     }
 
-    public List<MyImage> getListOfSeats() {
+    public List<MyImage> getList() {
         return listOfSeats;
     }
 
@@ -32,6 +31,13 @@ public class MyPlanePresenter extends BasePresenter implements IPresenter {
         listOfSeats.add(new MyImage(aImageView.getX(), aImageView.getY(), aImageView.getContentDescription(), aImageView.getParent()));
 
     }
+
+    @Override
+    public int[] getDrawablesList() {
+        return imageRepository.getSeatsDrawables();
+    }
+
+
     public int generateMyRandom(int minNumber, int maxNumber) {/*Generate a random number between 5-18 */
         return minNumber + (int) (Math.ceil(Math.random() * maxNumber));
     }

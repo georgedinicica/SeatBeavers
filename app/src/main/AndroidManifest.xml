@@ -19,9 +19,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlaneActivity"
+            android:name=".OldCode.PlaneActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".NamesActivity" />
+        <activity android:name=".OldCode.NamesActivity" />
         <activity
             android:name=".MyPlaneActivity"
             android:parentActivityName=".MainActivity"></activity>

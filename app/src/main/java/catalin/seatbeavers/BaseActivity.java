@@ -3,6 +3,7 @@ package catalin.seatbeavers;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,18 +15,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import catalin.seatbeavers.OldCode.PlaneActivity;
+
 
 public abstract class BaseActivity extends AppCompatActivity {
     private final int viewWidth = 200;
     private final int viewHeight = 75;
     private final int aMARGIN = 20;
     private final int aTEXTSIZE = 18;
-
+    DisplayMetrics displaymetrics = new DisplayMetrics();
     ViewGroup redLayout;
     List<ViewGroup> redLayoutContainer = new ArrayList<>();
 
     int x_Coord = 0;
-    int y_Coord=300;
+    int y_Coord = 300;
     ViewGroup mainLayout;
     LinearLayout checkAnswerLinearLayout;
     Button aCheckButton;
@@ -36,13 +39,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     String chosenAnswerString;
     String correctAnswerString;
+    public int imageY_Coord;
 
-    public void addLayoutComponents() { /*imagesContainer and imagesNeeded*/
-        addDefaultViews();
-        addCheckSolutionView();
-
-
-    }
 
     public abstract String getCorrectSolutionString();
 
@@ -143,10 +141,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    public void addImage(IPresenter presenter,Integer imageID, int x_ImageCoord, int y_ImageCoord) {
+    public void addImage(IPresenter presenter, Integer imageID, int x_ImageCoord, int y_ImageCoord,boolean scaleFlag) {
         ImageView imageView = new ImageView(this);
         imageView.setImageResource(imageID);
-        imageView.setContentDescription(getResources().getResourceName(imageID));
+        imageView.setContentDescription("img" + getResources().getResourceName(imageID));
 
         imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         imageView.setX(x_ImageCoord);
@@ -154,6 +152,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         //   imageView.setMaxWidth(300);
         //  imageView.setMaxHeight(108);
 
+        if (scaleFlag) {
+            imageView.setScaleX(1.18f);
+
+            imageView.setScaleY(1.18f);
+        }
         imageView.setVisibility(View.VISIBLE);
         mainLayout.addView(imageView);
         imageView.setOnTouchListener(new MyTouch());
@@ -161,24 +164,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         presenter.buildSeatsList(imageView);/*THIS SHOULD BE PLACED SEPARATELY*/
 
     }
-    public void addAllImages(IPresenter presenter, int numberIterations, int xDistance) {/*hardcodings. Could set this as parameters header*/
+
+    public void addAllImages(IPresenter presenter, int numberIterations, int xDistance, int yCoord, boolean b) {/*hardcodings. Could set this as parameters header*/
         for (int i = 0; i < numberIterations; i++) {
-            addImage(presenter, presenter.getShuffledListOfImages().get(i), x_Coord, y_Coord);
+            addImage(presenter, presenter.getShuffledListOfImages().get(i), x_Coord, yCoord,b);
             x_Coord += xDistance;
         }
     }
 
-    public void setImagesContainerLayout(int numberOfIterations,int h,int w,int distance) {
+    public void setImagesSolutionLayout(int numberOfIterations, int h, int w, int distance, int y_Coord) {
         int x = 0;
         for (int i = 0; i < numberOfIterations; i++) {
             redLayout = new RelativeLayout(this);
             redLayout.setX(x);
-            redLayout.setY(600);
+            redLayout.setY(y_Coord);
             redLayout.setBackgroundColor(Color.RED);
             redLayout.setContentDescription(TAG_LINEAR_RED + (i + 1));
-            redLayout.setLayoutParams(new ViewGroup.LayoutParams(h,w));//300, 108));
+            redLayout.setLayoutParams(new ViewGroup.LayoutParams(h, w));//300, 108));
 //            redLayout.setOnDragListener(new My2DragListener());
-     //       redLayout.setOnDragListener(new Drag(namePresenter.getListOfNames(), MAIN_TAG, TAG_LINEAR_RED));
+            //       redLayout.setOnDragListener(new Drag(namePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
 
             x += distance;//310;
             redLayoutContainer.add(redLayout);
@@ -187,18 +191,34 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void checkSolution(String aChosenAnswerString, String correctSolutionString) {
-        if (aChosenAnswerString.contains(correctSolutionString)) {
+    public static String stripNonDigits(final CharSequence input) {
+        final StringBuilder sb = new StringBuilder(
+                input.length());
+        for (int i = 0; i < input.length(); i++) {
+            final char c = input.charAt(i);
+            if (c > 47 && c < 58) {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+
+    public void checkSolution(String chosenAnswerString, String correctSolutionString) {
+
+
+        if (chosenAnswerString.contains(correctSolutionString)) {
             aTextView.setText(R.string.correctAnswerString);
             checkAnswerLinearLayout.setVisibility(View.VISIBLE);
             checkAnswerLinearLayout.setBackgroundColor(Color.GREEN);
         }
-        if (!aChosenAnswerString.contains(correctSolutionString)) {
+        if (!chosenAnswerString.contains(correctAnswerString)) {
             checkAnswerLinearLayout.setVisibility(View.VISIBLE);
             checkAnswerLinearLayout.setBackgroundColor(Color.RED);
             aTextView.setText(R.string.incorrectAnswerString);
         }
     }
+
 
     @NonNull
     private RelativeLayout.LayoutParams getLayoutParams(int w, int h) {

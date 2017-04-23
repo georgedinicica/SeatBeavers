@@ -1,4 +1,4 @@
-package catalin.seatbeavers;
+package catalin.seatbeavers.OldCode;
 
 import android.content.ClipData;
 import android.content.Context;
@@ -19,6 +19,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import catalin.seatbeavers.OldCode.MyImage;
+import catalin.seatbeavers.R;
 
 public class PlaneActivity extends AppCompatActivity {
     /*catalin*/

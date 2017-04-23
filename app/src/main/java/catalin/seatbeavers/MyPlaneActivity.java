@@ -4,27 +4,26 @@ import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MyPlaneActivity extends BaseActivity {
 
     int numberOfSeats;
     int miniumNumberOfSeats = 5;
     int maximumNumberOfSeats = 13;
 
-    List<MyImage> drawablesList = new ArrayList<>();
     MyPlanePresenter planePresenter = new MyPlanePresenter();
-
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        numberOfSeats=planePresenter.generateMyRandom(miniumNumberOfSeats,maximumNumberOfSeats);
+
+        numberOfSeats = planePresenter.generateMyRandom(miniumNumberOfSeats, maximumNumberOfSeats);
         init();
-        setImagesContainerLayout(numberOfSeats,100,100,102);
-        addAllImages(planePresenter, numberOfSeats, 93);
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        y_Coord = displaymetrics.heightPixels / 2;
+        // TODO: THe images should be bigger. SCale doesnt look good.
+        setImagesSolutionLayout(numberOfSeats, 103, 103, 107, (y_Coord + 200));
+        addAllImages(planePresenter, numberOfSeats, 110, y_Coord, true);
         setContentView(mainLayout);
         addBtnListeners();
     }
@@ -32,13 +31,42 @@ public class MyPlaneActivity extends BaseActivity {
 
     @Override
     public String getChosenSolutionString() {
-        chosenAnswerString = "1";
+        chosenAnswerString = new String();
+        for (int i = 0; i < redLayoutContainer.size(); i++) {
+            if (redLayoutContainer.get(i).getChildCount() == 1) {
+                chosenAnswerString += " " + stripNonDigits(redLayoutContainer.get(i).getChildAt(0).getContentDescription());
+            }
+        }
         return chosenAnswerString;
     }
 
     @Override
     public String getCorrectSolutionString() {
-        correctAnswerString = "1 2 3 4 5";
+        String s;
+        correctAnswerString = new String();
+        int imgNumberConverted;
+
+        for (int i = 0; i < numberOfSeats; i++) {
+            s = stripNonDigits(getResources().getResourceName(planePresenter.getShuffledListOfImages().get(i))); /*show the name of the image*/
+            imgNumberConverted = Integer.parseInt(s);
+            if (imgNumberConverted >= 13 && imgNumberConverted <= 18) {
+                correctAnswerString = correctAnswerString + " " + s;
+            }
+        }
+        for (int i = numberOfSeats - 1; i >= 0; i--) {
+            s = stripNonDigits(getResources().getResourceName(planePresenter.getShuffledListOfImages().get(i))); /** II 4L-6R   7-12*/
+            imgNumberConverted = Integer.parseInt(s);
+            if (imgNumberConverted >= 7 && imgNumberConverted <= 12) {
+                correctAnswerString = correctAnswerString + " " + s;
+            }
+        }
+        for (int i = 0; i < numberOfSeats; i++) {
+            s = stripNonDigits(getResources().getResourceName(planePresenter.getShuffledListOfImages().get(i))); /** III 1L-3R  1-6*/
+            imgNumberConverted = Integer.parseInt(s);
+            if (imgNumberConverted >= 1 && imgNumberConverted <= 6) {
+                correctAnswerString = correctAnswerString + " " + s;
+            }
+        }
         return correctAnswerString;
     }
 
@@ -55,8 +83,17 @@ public class MyPlaneActivity extends BaseActivity {
                 recreateActivity(v);
             }
         });
+
+
+        for (int i = 0; i < redLayoutContainer.size(); i++) {
+            redLayoutContainer.get(i).setOnDragListener(new MyDrag(this, planePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
+        }
+        mainLayout.setOnDragListener(new MyDrag(this, planePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
+
     }
 
-
 }
+
+
+
 

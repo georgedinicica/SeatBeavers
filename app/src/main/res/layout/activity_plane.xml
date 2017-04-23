@@ -8,7 +8,7 @@
     android:layout_margin="1dp"
     android:background="#AFFFD0"
     android:orientation="horizontal"
-    tools:context=".PlaneActivity">
+    tools:context=".OldCode.PlaneActivity">
 
     <ImageView
 

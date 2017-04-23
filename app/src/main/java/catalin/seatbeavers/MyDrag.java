@@ -1,20 +1,23 @@
 package catalin.seatbeavers;
 
 
+import android.graphics.Color;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.List;
 
-public class Drag implements View.OnDragListener {
+public class MyDrag implements View.OnDragListener {
 
 
+    private BaseActivity baseActivity;
     private List<MyImage> listOfNames;
     String MAIN_TAG = "main";
     String TAG_LINEAR_RED = "linear";
 
-    public Drag(List<MyImage> listOfNames, String MAIN_TAG, String TAG_LINEAR_RED) {
+
+    public MyDrag(BaseActivity baseActivity, List<MyImage> listOfNames, String MAIN_TAG, String TAG_LINEAR_RED) {
+        this.baseActivity = baseActivity;
         this.listOfNames = listOfNames;
         this.MAIN_TAG = MAIN_TAG;
         this.TAG_LINEAR_RED = TAG_LINEAR_RED;
@@ -23,23 +26,24 @@ public class Drag implements View.OnDragListener {
     @Override
     public boolean onDrag(View v, DragEvent event) {
         float x_Coord = 0, y_Coord = 0;
-        View draggedImage = (View) event.getLocalState();
+        final View draggedImage = (View) event.getLocalState();
+        int tempColor=v.getSolidColor();
         if (DragEvent.ACTION_DRAG_STARTED == event.getAction()) {
-
+            baseActivity.resetSolutionLayout();
             draggedImage.setVisibility(View.INVISIBLE);
         }
-        if (DragEvent.ACTION_DRAG_ENDED == event.getAction()) {
 
-            draggedImage.setVisibility(View.VISIBLE);
-//
+        if (DragEvent.ACTION_DRAG_ENTERED == event.getAction()) {
+            if (v.getContentDescription().toString().contains(TAG_LINEAR_RED))
+                v.setBackgroundColor(Color.BLUE);
+
         }
-//            if(DragEvent.ACTION_DRAG_ENTERED==event.getAction()){
-//                v.setBackgroundColor(Color.BLUE);
-//            }
-//            if(DragEvent.ACTION_DRAG_EXITED==event.getAction()){
-//                v.setBackgroundColor(Color.GREEN);
-        // checkAnswerLinearLayout.setVisibility(View.VISIBLE);
-//            }
+        if (DragEvent.ACTION_DRAG_EXITED == event.getAction()) {
+            if (!v.getContentDescription().toString().contains(TAG_LINEAR_RED))
+                v.setBackgroundColor(Color.TRANSPARENT);
+            if (v.getContentDescription().toString().contains(TAG_LINEAR_RED))
+                v.setBackgroundColor(Color.RED);
+        }
         if (DragEvent.ACTION_DROP == event.getAction()) {
 
             ViewGroup owner = (ViewGroup) draggedImage.getParent();
@@ -71,33 +75,41 @@ public class Drag implements View.OnDragListener {
                 draggedImage.invalidate();
                 return true;
             }
-//                v.setVisibility(View.VISIBLE);
             if (!v.getContentDescription().toString().contains(TAG_LINEAR_RED)) {
-                for(int i=0;i<listOfNames.size();i++) {
-
-                    if (listOfNames.get(i).getMyImageDescription() ==draggedImage.getContentDescription()){
-                        x_Coord = listOfNames.get(i).getX_coord();
-                        y_Coord = listOfNames.get(i).getY_coord();
-                        break;
-
-                    }
-
-                }
-//                    for (Seat s : listOfNames) {
-//                        if (s.getMyImageDescription() == draggedImage.getContentDescription()) {
-//                            x_Coord = s.getX_coord();
-//                            y_Coord = (s.getY_coord());
-//                            break;
-//                        }
+//                for (int i = 0; i < listOfNames.size(); i++) {
+//                    if (listOfNames.get(i).getMyImageDescription() == draggedImage.getContentDescription()) {
+//                        x_Coord = listOfNames.get(i).getX_coord();
+//                        y_Coord = listOfNames.get(i).getY_coord();
+//                        break;
 //                    }
+//                }
+                    for (MyImage s : listOfNames) {
+                        if (s.getMyImageDescription() == draggedImage.getContentDescription()) {
+                            x_Coord = s.getX_coord();
+                            y_Coord = (s.getY_coord());
+                            break;
+                        }
+                    }
                 viewDragWork(owner, container, draggedImage, x_Coord, y_Coord);
+                v.setBackgroundColor(tempColor);
                 //  redLayout.setBackgroundColor(Color.BLACK);
-                //return true;
+                return true;
             }
         }
         if (event.getAction() == DragEvent.ACTION_DRAG_ENDED) {
-            v.setVisibility(View.VISIBLE);
+
+            draggedImage.post(new Runnable() {
+                public void run() {
+                    draggedImage.setVisibility(View.VISIBLE);
+                }
+
+            });
+            if (v.getContentDescription().toString().contains(TAG_LINEAR_RED))
+            {
+                v.setBackgroundColor(Color.RED);
+            }
         }
+        draggedImage.invalidate();
         v.invalidate();
         return true;
     }
