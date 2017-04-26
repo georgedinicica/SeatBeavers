@@ -22,23 +22,14 @@ public class MyPlaneActivity extends BaseActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         y_Coord = displaymetrics.heightPixels / 2;
         // TODO: THe images should be bigger. SCale doesnt look good.
-        setImagesSolutionLayout(numberOfSeats, 103, 103, 107, (y_Coord + 200));
+        setEndPointsLayout(numberOfSeats, 103, 103, 107, (y_Coord + 200));
         addAllImages(planePresenter, numberOfSeats, 110, y_Coord, true);
         setContentView(mainLayout);
-        addBtnListeners();
+
+        addListenersBtn();
+        addListenersDrag();
     }
 
-
-    @Override
-    public String getChosenSolutionString() {
-        chosenAnswerString = new String();
-        for (int i = 0; i < redLayoutContainer.size(); i++) {
-            if (redLayoutContainer.get(i).getChildCount() == 1) {
-                chosenAnswerString += " " + stripNonDigits(redLayoutContainer.get(i).getChildAt(0).getContentDescription());
-            }
-        }
-        return chosenAnswerString;
-    }
 
     @Override
     public String getCorrectSolutionString() {
@@ -70,11 +61,20 @@ public class MyPlaneActivity extends BaseActivity {
         return correctAnswerString;
     }
 
-    private void addBtnListeners() {
+    @Override
+    protected void addListenersDrag() {
+        for (int i = 0; i < redLayoutContainer.size(); i++) {
+            redLayoutContainer.get(i).setOnDragListener(new MyDrag(this, planePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
+        }
+        mainLayout.setOnDragListener(new MyDrag(this, planePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
+    }
+
+    @Override
+    protected void addListenersBtn() {
         aCheckButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkSolution(getChosenSolutionString(), getCorrectSolutionString());
+                checkSolution();
             }
         });
         aRestartButton.setOnClickListener(new View.OnClickListener() {
@@ -83,14 +83,8 @@ public class MyPlaneActivity extends BaseActivity {
                 recreateActivity(v);
             }
         });
-
-
-        for (int i = 0; i < redLayoutContainer.size(); i++) {
-            redLayoutContainer.get(i).setOnDragListener(new MyDrag(this, planePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
-        }
-        mainLayout.setOnDragListener(new MyDrag(this, planePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
-
     }
+
 
 }
 

@@ -43,8 +43,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     public abstract String getCorrectSolutionString();
-
-    public abstract String getChosenSolutionString();
+    protected abstract void addListenersDrag();
+    protected  abstract void addListenersBtn();
 
     public void init() {
         setMainLayout(0, 0);
@@ -53,6 +53,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        setContentView(mainLayout);
     }
 
+    public  void start(){
+        setContentView(mainLayout);
+
+    }
     private void setMainLayout(int xCoord, int yCoord) {
 
         mainLayout = new RelativeLayout(this);
@@ -172,7 +176,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void setImagesSolutionLayout(int numberOfIterations, int h, int w, int distance, int y_Coord) {
+    public void setEndPointsLayout(int numberOfIterations, int h, int w, int distance, int y_Coord) {
         int x = 0;
         for (int i = 0; i < numberOfIterations; i++) {
             redLayout = new RelativeLayout(this);
@@ -190,6 +194,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
     }
+    public String getChosenSolutionString() {
+        chosenAnswerString = new String();
+        for (int i = 0; i < redLayoutContainer.size(); i++) {
+            if (redLayoutContainer.get(i).getChildCount() == 1) {
+                chosenAnswerString += " " + stripNonDigits(redLayoutContainer.get(i).getChildAt(0).getContentDescription());
+            }
+        }
+        return chosenAnswerString;
+    }
 
     public static String stripNonDigits(final CharSequence input) {
         final StringBuilder sb = new StringBuilder(
@@ -203,11 +216,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         return sb.toString();
     }
 
+    public boolean testCorrectAnswer() {
+        return getChosenSolutionString() == getCorrectSolutionString();
+    }
 
-    public void checkSolution(String chosenAnswerString, String correctSolutionString) {
+
+    public  void checkSolution() {
 
 
-        if (chosenAnswerString.contains(correctSolutionString)) {
+        boolean ok = testCorrectAnswer();
+        if (ok) {
             aTextView.setText(R.string.correctAnswerString);
             checkAnswerLinearLayout.setVisibility(View.VISIBLE);
             checkAnswerLinearLayout.setBackgroundColor(Color.GREEN);

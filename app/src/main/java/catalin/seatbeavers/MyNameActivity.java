@@ -3,7 +3,6 @@ package catalin.seatbeavers;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Toast;
 
 public class MyNameActivity extends BaseActivity {
 
@@ -20,10 +19,10 @@ public class MyNameActivity extends BaseActivity {
     private int SOLUTION_LAYUT_WIDTH = 118;
     private int SOLUTION_LAYOUT_DISTANCE = 308;
 
-    public void setY_Coord() {
+    public int setY_Coord() {
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
        this.y_Coord = displaymetrics.heightPixels / 2;
-
+        return  this.y_Coord;
     }
 
     /*
@@ -32,34 +31,23 @@ public class MyNameActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         init(); //sets the mainLayout, default Views and checkSolutionLayout
          /*Add container Layout*/
 
-        setY_Coord();
-        setImageY_Coord(y_Coord,200);
-        setImagesSolutionLayout(NUMBER_OF_ELEMENTS, SOLUTION_LAYUT_HEIGHT, SOLUTION_LAYUT_WIDTH, SOLUTION_LAYOUT_DISTANCE, y_Coord);
+        setImageY_Coord(setY_Coord(),200);
+        setEndPointsLayout(NUMBER_OF_ELEMENTS, SOLUTION_LAYUT_HEIGHT, SOLUTION_LAYUT_WIDTH, SOLUTION_LAYOUT_DISTANCE, setY_Coord());
         /*TEST Load image*/
-        addAllImages(namePresenter, NUMBER_OF_ELEMENTS, SOLUTION_LAYOUT_DISTANCE, imageY_Coord,false);
+        addAllImages(namePresenter, NUMBER_OF_ELEMENTS, SOLUTION_LAYOUT_DISTANCE, setImageY_Coord(setY_Coord(),200),false);
 
-        setContentView(mainLayout);
+        start();  // sets the LayoutCOntent view to mainLayout
 
-//        checkSolution(getChosenSolutionString(),getChosenSolutionString());
-        addBtnListeners();
-        addDragListeners();
+        addListenersBtn();
+        addListenersDrag();
 
 
     }
 
-    @Override
-    public String getChosenSolutionString() {
-        chosenAnswerString = new String();
-        for (int i = 0; i < redLayoutContainer.size(); i++) {
-            if (redLayoutContainer.get(i).getChildCount() == 1) {
-                chosenAnswerString += " " + stripNonDigits(redLayoutContainer.get(i).getChildAt(0).getContentDescription());
-            }
-        }
-        return chosenAnswerString;
-    }
 
     @Override
     public String getCorrectSolutionString() {
@@ -67,7 +55,7 @@ public class MyNameActivity extends BaseActivity {
         return correctAnswerString;
     }
 
-    private void addDragListeners() {
+    protected void addListenersDrag() {
         for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
             redLayoutContainer.get(i).setOnDragListener(new MyDrag(this,namePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
         }
@@ -76,11 +64,12 @@ public class MyNameActivity extends BaseActivity {
     }
 
 
-    private void addBtnListeners() {
+    protected void addListenersBtn() {
         aCheckButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkSolution(getChosenSolutionString(), getCorrectSolutionString());
+                // TODO: check solution has ok=1 testAnswer that compares 2 Strings
+                checkSolution();
 
             }
         });
@@ -94,7 +83,9 @@ public class MyNameActivity extends BaseActivity {
 
     }
 
-    public void setImageY_Coord(int imageY_Coord,int param) {
+
+    public int setImageY_Coord(int imageY_Coord,int param) {
         this.imageY_Coord = imageY_Coord+200;
+            return  this.imageY_Coord;
     }
 }
