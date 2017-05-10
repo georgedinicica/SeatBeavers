@@ -274,6 +274,7 @@ public class NamesActivity extends AppCompatActivity {
     }
 
     private void chosenSolution() {
+        // TODO: it doenst matter if you have 1 2 3 4 5 or 5 4 3 2 1 make it general
         aChosenAnswerString = new String();
         for (int i = 0; i < redLayoutContainer.size(); i++) {
             if (redLayoutContainer.get(i).getChildCount() == 1) {

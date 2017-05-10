@@ -70,7 +70,7 @@ public class MyPlaneActivity extends BaseActivity {
     }
 
     @Override
-    protected void addListenersBtn() {
+    public void addListenersBtn() {
         aCheckButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -26,6 +26,7 @@
             android:name=".MyPlaneActivity"
             android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".MyNameActivity"></activity>
+        <activity android:name=".WorkActivity"></activity>
     </application>
 
 </manifest>

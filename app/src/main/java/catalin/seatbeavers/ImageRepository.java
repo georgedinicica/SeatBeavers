@@ -10,6 +10,8 @@ import java.util.List;
 public class ImageRepository {
     int[] drawableNames = new int[]{R.drawable.alena1, R.drawable.bruno2, R.drawable.cyril3, R.drawable.dana4, R.drawable.eva5};
 
+    int[] drawableWork = new int[]{R.drawable.alena1, R.drawable.bruno2, R.drawable.cyril3, R.drawable.dana4, R.drawable.eva5};
+
     int[] drawablesSeats = new int[]{
             R.drawable.img1,
             R.drawable.img2,
@@ -39,6 +41,13 @@ public class ImageRepository {
     public int[] getNamesDrawable() {
         return drawableNames;
     }
+
+    public int[] getWorkDrawable() {
+        return drawableWork;
+
+    }
+
+
 
 
 

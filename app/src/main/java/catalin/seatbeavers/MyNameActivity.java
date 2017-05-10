@@ -17,7 +17,7 @@ public class MyNameActivity extends BaseActivity {
     private int NUMBER_OF_ELEMENTS = 5;
     private int SOLUTION_LAYUT_HEIGHT = 300;
     private int SOLUTION_LAYUT_WIDTH = 118;
-    private int SOLUTION_LAYOUT_DISTANCE = 308;
+    private int SOLUTION_LAYOUT_DISTANCE = 5308;
 
     public int setY_Coord() {
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -63,8 +63,8 @@ public class MyNameActivity extends BaseActivity {
 
     }
 
-
-    protected void addListenersBtn() {
+@Override
+    public void addListenersBtn() {
         aCheckButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

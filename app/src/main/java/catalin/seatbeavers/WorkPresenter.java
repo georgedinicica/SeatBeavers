@@ -5,13 +5,15 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Catalin on 04/05/2017.
+ */
 
-public class MyNamePresenter extends BasePresenter implements IPresenter {
-        private List<MyImage> listOfNames = new ArrayList<>();
+public class WorkPresenter extends BasePresenter implements IPresenter {
+    private List<MyImage> listOfNames = new ArrayList<>();
 
-
-    MyNamePresenter() {
-        shuffleDrawables(imageRepository.getNamesDrawable(), drawableList);
+    public WorkPresenter() {
+        shuffleDrawables(imageRepository.getSeatsDrawables(), drawableList);
     }
 
     @Override
@@ -19,21 +21,20 @@ public class MyNamePresenter extends BasePresenter implements IPresenter {
         return drawableList;
     }
 
+
     @Override
     public void buildSeatsList(ImageView aImageView) {
-
         listOfNames.add(new MyImage(aImageView.getX(), aImageView.getY(), aImageView.getContentDescription(), aImageView.getParent()));
 
     }
 
-    public List<MyImage> getList() {
-        return listOfNames;
+    @Override
+    public int[] getDrawablesList() {
+       return imageRepository.getNamesDrawable();
     }
 
     @Override
-    public int[] getDrawablesList() {
-        return imageRepository.getNamesDrawable();
+    public List<MyImage> getList() {
+        return listOfNames;
     }
-
-
 }

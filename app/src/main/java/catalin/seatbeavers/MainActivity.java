@@ -27,15 +27,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startNamesApp(View view) {
+    public void  startNamesApp(View view) {
         Intent intent = new Intent(this, MyNameActivity.class);
         //Intent intent = new Intent(this, NamesActivity.class);
 
         startActivity(intent);
     }
 
-    public void anotherStart(View view) {
-        Intent intent = new Intent(this, MyNameActivity.class);
+    public void startWork(View view) {
+        Intent intent = new Intent(this, WorkActivity.class);
 
         startActivity(intent);
     }

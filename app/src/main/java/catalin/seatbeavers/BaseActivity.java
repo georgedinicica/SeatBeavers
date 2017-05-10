@@ -44,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract String getCorrectSolutionString();
     protected abstract void addListenersDrag();
-    protected  abstract void addListenersBtn();
+//    protected  abstract void addListenersBtn();
 
     public void init() {
         setMainLayout(0, 0);
@@ -57,6 +57,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(mainLayout);
 
     }
+
     private void setMainLayout(int xCoord, int yCoord) {
 
         mainLayout = new RelativeLayout(this);
@@ -248,5 +249,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         checkAnswerLinearLayout.setVisibility(View.INVISIBLE);
     }
 
+    public abstract void addListenersBtn();
 
 }
