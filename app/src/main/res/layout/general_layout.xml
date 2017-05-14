@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:background="@drawable/buttonstyle"
         android:foreground="@android:drawable/ic_menu_rotate"
         android:foregroundGravity="center"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/restartButton"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:background="@drawable/buttonstyle"
         android:onClick="checkSolution"
         android:text="@string/test"
@@ -35,25 +35,23 @@
 
     <LinearLayout
         android:id="@+id/testAnswerLayout"
-        android:visibility="invisible"
-        android:layout_width="120dp"
+        android:layout_width="100dp"
         android:layout_height="30dp"
-        android:layout_alignBottom="@+id/restartButton"
-        android:layout_margin="10dp"
-        android:layout_toStartOf="@+id/restartButton"
+        android:layout_alignEnd="@+id/buttonTest"
+        android:layout_below="@+id/buttonTest"
+        android:layout_margin="5dp"
         android:background="@color/colorRed"
-        android:orientation="horizontal">
-
+        android:orientation="vertical"
+        android:visibility="invisible">
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignBottom="@+id/testAnswerLayout"
-        android:layout_margin="10dp"
-        android:layout_toStartOf="@+id/testAnswerLayout"
-        android:shadowDy="20"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/testAnswerLayout"
+        android:layout_margin="5dp"
         android:textColor="@color/black"
         android:textSize="22sp" />
 

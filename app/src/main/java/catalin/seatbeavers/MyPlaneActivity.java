@@ -3,6 +3,7 @@ package catalin.seatbeavers;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class MyPlaneActivity extends BaseActivity {
 
@@ -18,12 +19,12 @@ public class MyPlaneActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         numberOfSeats = planePresenter.generateMyRandom(miniumNumberOfSeats, maximumNumberOfSeats);
-        init();
+        init(getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight());
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         y_Coord = displaymetrics.heightPixels / 2;
         // TODO: THe images should be bigger. SCale doesnt look good.
         setEndPointsLayout(numberOfSeats, 103, 103, 107, (y_Coord + 200));
-        addAllImages(planePresenter, numberOfSeats, 110, y_Coord, true);
+        addAllImages(planePresenter, numberOfSeats, 95, 95, 110, y_Coord, true);
         setContentView(mainLayout);
 
         addListenersBtn();
@@ -41,21 +42,23 @@ public class MyPlaneActivity extends BaseActivity {
             s = stripNonDigits(getResources().getResourceName(planePresenter.getShuffledListOfImages().get(i))); /*show the name of the image*/
             imgNumberConverted = Integer.parseInt(s);
             if (imgNumberConverted >= 13 && imgNumberConverted <= 18) {
-                correctAnswerString = correctAnswerString + " " + s;
+                correctAnswerString += s + " ";
             }
         }
         for (int i = numberOfSeats - 1; i >= 0; i--) {
             s = stripNonDigits(getResources().getResourceName(planePresenter.getShuffledListOfImages().get(i))); /** II 4L-6R   7-12*/
             imgNumberConverted = Integer.parseInt(s);
             if (imgNumberConverted >= 7 && imgNumberConverted <= 12) {
-                correctAnswerString = correctAnswerString + " " + s;
+                correctAnswerString += s + " ";
+                // /correctAnswerString = correctAnswerString + " " + s;
             }
         }
         for (int i = 0; i < numberOfSeats; i++) {
             s = stripNonDigits(getResources().getResourceName(planePresenter.getShuffledListOfImages().get(i))); /** III 1L-3R  1-6*/
             imgNumberConverted = Integer.parseInt(s);
             if (imgNumberConverted >= 1 && imgNumberConverted <= 6) {
-                correctAnswerString = correctAnswerString + " " + s;
+                correctAnswerString += s + " ";
+//     correctAnswerString = correctAnswerString + " " + s;
             }
         }
         return correctAnswerString;
@@ -75,6 +78,7 @@ public class MyPlaneActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 checkSolution();
+
             }
         });
         aRestartButton.setOnClickListener(new View.OnClickListener() {

@@ -1,16 +1,11 @@
 package catalin.seatbeavers;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Created by Catalin on 18/04/2017.
  */
 
 public class ImageRepository {
     int[] drawableNames = new int[]{R.drawable.alena1, R.drawable.bruno2, R.drawable.cyril3, R.drawable.dana4, R.drawable.eva5};
-
-    int[] drawableWork = new int[]{R.drawable.alena1, R.drawable.bruno2, R.drawable.cyril3, R.drawable.dana4, R.drawable.eva5};
 
     int[] drawablesSeats = new int[]{
             R.drawable.img1,
@@ -33,6 +28,8 @@ public class ImageRepository {
             R.drawable.img18
     };
 
+    int[] drawableSK06 = new int [] {R.drawable.sk06_cintorin1,R.drawable.sk06_ihrisko2,R.drawable.sk06_kaviaren3,R.drawable.sk06_pekaren4,R.drawable.sk06_strom5,R.drawable.sk06_susedka6};
+
     public int[] getSeatsDrawables() {
         return drawablesSeats;
     }
@@ -42,12 +39,7 @@ public class ImageRepository {
         return drawableNames;
     }
 
-    public int[] getWorkDrawable() {
-        return drawableWork;
-
-    }
-
-
+    public int[] getNamesSK06() { return drawableSK06; }
 
 
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Beavers</string>
+    <string name="app_name">Beavers Library</string>
     <string name="startButtonString">Launch Plane</string>
     <string name="restartButtonString">Restart</string>
     <string name="test">Test Answer</string>

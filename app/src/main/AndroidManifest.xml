@@ -19,14 +19,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OldCode.PlaneActivity"
-            android:screenOrientation="landscape" />
-        <activity android:name=".OldCode.NamesActivity" />
-        <activity
             android:name=".MyPlaneActivity"
             android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".MyNameActivity"></activity>
-        <activity android:name=".WorkActivity"></activity>
+        <activity android:name=".SK06Activity"></activity>
     </application>
 
 </manifest>
