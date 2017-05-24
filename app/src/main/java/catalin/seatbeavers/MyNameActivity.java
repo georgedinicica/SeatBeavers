@@ -1,29 +1,34 @@
 package catalin.seatbeavers;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Toast;
 
 public class MyNameActivity extends BaseActivity {
 
-    MyNamePresenter namePresenter=new MyNamePresenter();
+    MyNamePresenter namePresenter = new MyNamePresenter();
 
     int x_Coord = 0;
     int y_Coord;//=600;
 
-/**HAVE TO ADD THE HIDING LAYOUT AGAIN*/
+    /**
+     * HAVE TO ADD THE HIDING LAYOUT AGAIN
+     */
     String MAIN_TAG = "main";
     String TAG_LINEAR_RED = "linear";
     private int NUMBER_OF_ELEMENTS = 5;
-    private int SOLUTION_LAYUT_HEIGHT = 300;
-    private int SOLUTION_LAYUT_WIDTH = 118;
-    private int SOLUTION_LAYOUT_DISTANCE = 308;
+    private int SOLUTION_LAYUT_HEIGHT = 118;
+    private int SOLUTION_LAYUT_WIDTH = 300;
+    private int SOLUTION_LAYOUT_DISTANCE = 8;
 
     public int setY_Coord() {
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-       this.y_Coord = displaymetrics.heightPixels / 2;
-        return  this.y_Coord;
+        getWindowManager().getDefaultDisplay().getMetrics(baseDisplayMetrics);
+        this.y_Coord = baseDisplayMetrics.heightPixels / 2;
+//        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+//        this.y_Coord = displaymetrics.heightPixels / 2;
+
+        return this.y_Coord;
     }
 
     /*
@@ -33,13 +38,14 @@ public class MyNameActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        init(getWindowManager().getDefaultDisplay().getWidth(),getWindowManager().getDefaultDisplay().getHeight()); //sets the mainLayout, default Views and checkSolutionLayout
-         /*Add container Layout*/
+        init();
+//        oldInitMethod(getWindowManager().getDefaultDisplay().getWidth(),getWindowManager().getDefaultDisplay().getHeight()); //sets the mainLayout, default Views and checkSolutionLayout
 
-        setImageY_Coord(setY_Coord(),200);
-        setEndPointsLayout(NUMBER_OF_ELEMENTS, SOLUTION_LAYUT_HEIGHT, SOLUTION_LAYUT_WIDTH, SOLUTION_LAYOUT_DISTANCE, setY_Coord());
-        /*TEST Load image*/
-        addAllImages(namePresenter, NUMBER_OF_ELEMENTS,getResources().getDrawable(R.drawable.alena1).getMinimumWidth(),getResources().getDrawable(R.drawable.alena1).getMinimumHeight(), SOLUTION_LAYOUT_DISTANCE, setImageY_Coord(setY_Coord(),200),false);
+        setImageY_Coord(setY_Coord(), 200);
+        //  setEndPointsLayout(NUMBER_OF_ELEMENTS, SOLUTION_LAYUT_HEIGHT, SOLUTION_LAYUT_WIDTH, SOLUTION_LAYOUT_DISTANCE, setY_Coord());
+        setEndPointsLayoutXY(NUMBER_OF_ELEMENTS, SOLUTION_LAYUT_WIDTH, SOLUTION_LAYUT_HEIGHT, SOLUTION_LAYUT_WIDTH + 5, setImageY_Coord(setY_Coord(), 200), 1, 1);
+
+        addAllImages(namePresenter, NUMBER_OF_ELEMENTS, getResources().getDrawable(R.drawable.alena1).getMinimumWidth(), getResources().getDrawable(R.drawable.alena1).getMinimumHeight(), SOLUTION_LAYOUT_DISTANCE,getViewHeight() - getUnusableScreenSpace() - SOLUTION_LAYUT_HEIGHT ,false);
 
         start();  // sets the LayoutCOntent view to mainLayout
 
@@ -58,13 +64,13 @@ public class MyNameActivity extends BaseActivity {
 
     protected void addListenersDrag() {
         for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-            redLayoutContainer.get(i).setOnDragListener(new MyDrag(this,namePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
+            redLayoutContainer.get(i).setOnDragListener(new MyDrag(this, namePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
         }
-        mainLayout.setOnDragListener(new MyDrag(this,namePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
+        mainLayout.setOnDragListener(new MyDrag(this, namePresenter.getList(), MAIN_TAG, TAG_LINEAR_RED));
 
     }
 
-@Override
+    @Override
     public void addListenersBtn() {
         aCheckButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,13 +88,14 @@ public class MyNameActivity extends BaseActivity {
 
 
     }
-@Override
-public void checkSolution(){
-    super.checkSolution();
-}
 
-    public int setImageY_Coord(int imageY_Coord,int param) {
-        this.imageY_Coord = imageY_Coord+200;
-            return  this.imageY_Coord;
+    @Override
+    public void checkSolution() {
+        super.checkSolution();
+    }
+
+    public int setImageY_Coord(int imageY_Coord, int param) {
+        this.imageY_Coord = imageY_Coord + 200;
+        return this.imageY_Coord;
     }
 }

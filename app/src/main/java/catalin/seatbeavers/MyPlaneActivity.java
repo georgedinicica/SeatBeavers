@@ -3,7 +3,6 @@ package catalin.seatbeavers;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 public class MyPlaneActivity extends BaseActivity {
 
@@ -19,12 +18,12 @@ public class MyPlaneActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         numberOfSeats = planePresenter.generateMyRandom(miniumNumberOfSeats, maximumNumberOfSeats);
-        init(getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight());
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        y_Coord = displaymetrics.heightPixels / 2;
+        oldInitMethod(getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight());
+        getWindowManager().getDefaultDisplay().getMetrics(baseDisplayMetrics);
+        y_Coord = baseDisplayMetrics.heightPixels / 2;
         // TODO: THe images should be bigger. SCale doesnt look good.
         setEndPointsLayout(numberOfSeats, 103, 103, 107, (y_Coord + 200));
-        addAllImages(planePresenter, numberOfSeats, 95, 95, 110, y_Coord, true);
+        addAllImages(planePresenter, numberOfSeats, 95, 95, 15, y_Coord, true);
         setContentView(mainLayout);
 
         addListenersBtn();
